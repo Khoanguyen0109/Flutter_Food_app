@@ -1,0 +1,91 @@
+name: food_app
+description: Food App
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.12.0 <3.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+
+  provider: ^6.0.1
+  carousel_slider: ^4.0.0
+  font_awesome_flutter: ^9.2.0
+  google_maps_flutter: ^2.1.1
+  google_maps_flutter_web: ^0.3.2
+  firebase_core: ^1.10.5
+  firebase_auth: ^3.3.3
+  fluttertoast: ^8.0.8
+  google_places_flutter: ^2.0.5
+  http: ^0.13.4
+  uuid: ^3.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+  fonts:
+    - family: Opensans
+      fonts:
+        - asset: assets/fonts/opensans_light.ttf
+          weight: 300
+        - asset: assets/fonts/opensans_regular.ttf
+          weight: 400
+        - asset: assets/fonts/opensans_semibold.ttf
+          weight: 600
+        - asset: assets/fonts/opensans_bold.ttf
+          weight: 700
+        - asset: assets/fonts/opensans_extrabold.ttf
+          weight: 800
+
+  uses-material-design: true
+
+  assets:
+    - localization/ar.json
+    - localization/de.json
+    - localization/en.json
+    - localization/es.json
+    - localization/fr.json
+    - localization/hi.json
+    - localization/hu.json
+    - localization/in.json
+    - localization/it.json
+    - localization/iw.json
+    - localization/ja.json
+    - localization/ko.json
+    - localization/nl.json
+    - localization/pt.json
+    - localization/ro.json
+    - localization/ru.json
+    - localization/th.json
+    - localization/tr.json
+    - localization/ur.json
+    - localization/vi.json
+    - localization/zh.json
+    - assets/images/
+    - assets/images/2.0x/
+    - assets/images/3.0x/
+    - assets/map_style.txt
