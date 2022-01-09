@@ -10,7 +10,7 @@ import 'package:food_app/pages/order/widgets/find_shipper.dart';
 import 'package:food_app/pages/order/widgets/order_item_row.dart';
 import 'package:food_app/pages/order/widgets/order_map.dart';
 import 'package:food_app/pages/order/widgets/perpare_order.dart';
-import 'package:food_app/services/app_localizations.dart';
+import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/utils/constants.dart';
 import 'package:food_app/widgets/dotted_line.dart';
 

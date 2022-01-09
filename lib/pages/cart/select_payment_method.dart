@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
 import 'package:food_app/configs/my_class.dart';
-import 'package:food_app/services/app_localizations.dart';
+import 'package:food_app/providers/app_localizations.dart';
 
 class PaymentMethod extends StatefulWidget {
   int? paymemtMethod;

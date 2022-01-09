@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/models/order_item_models.dart';
-import 'package:food_app/services/app_localizations.dart';
+import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
 import 'package:food_app/models/models.dart';
 import 'package:food_app/configs/my_class.dart';
 import 'package:food_app/pages/cart/select_address.dart';
 import 'package:food_app/pages/cart/select_payment_method.dart';
-import 'package:food_app/services/cart_provider.dart';
+import 'package:food_app/providers/cart_provider.dart';
 import 'package:food_app/widgets/counter_button.dart';
 import 'package:food_app/widgets/delivery_note_dialog.dart';
 import 'package:food_app/widgets/dotted_line.dart';

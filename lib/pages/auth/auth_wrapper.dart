@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_app/models/user_model.dart';
 import 'package:food_app/pages/auth/login.dart';
 import 'package:food_app/pages/home/home.dart';
-import 'package:food_app/services/auth_service.dart';
+import 'package:food_app/providers/auth_service.dart';
 import 'package:food_app/widgets/loading.dart';
 import 'package:provider/provider.dart';
 

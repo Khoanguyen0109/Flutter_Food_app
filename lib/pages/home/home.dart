@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:food_app/services/app_localizations.dart';
+import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
 import 'package:food_app/configs/my_class.dart';
-import 'package:food_app/services/cart_provider.dart';
+import 'package:food_app/providers/cart_provider.dart';
 import 'package:food_app/tabs/favorite_tab.dart';
 import 'package:food_app/tabs/home_tab.dart';
 import 'package:food_app/tabs/offer_tab.dart';

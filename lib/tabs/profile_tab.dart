@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/services/app_localizations.dart';
+import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
 import 'package:food_app/configs/my_class.dart';
@@ -10,7 +10,7 @@ import 'package:food_app/pages/location/my_address.dart';
 import 'package:food_app/pages/user/notifications.dart';
 import 'package:food_app/pages/order/order_tracking1.dart';
 import 'package:food_app/pages/order/order_tracking2.dart';
-import 'package:food_app/services/auth_service.dart';
+import 'package:food_app/providers/auth_service.dart';
 import 'package:provider/provider.dart';
 
 class ProfileTab extends StatefulWidget {

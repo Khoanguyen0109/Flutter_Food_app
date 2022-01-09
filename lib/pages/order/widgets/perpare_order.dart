@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:food_app/services/app_localizations.dart';
+import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/widgets/circular_progress_bar.dart';
 
 class PrepareOrder extends StatelessWidget {

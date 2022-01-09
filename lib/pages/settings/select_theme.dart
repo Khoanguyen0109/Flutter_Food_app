@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:food_app/services/app_localizations.dart';
+import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
 import 'package:food_app/configs/my_class.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/configs/GridFixedHeightDelegate.dart';
-import 'package:food_app/services/app_localizations.dart';
+import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
 import 'package:food_app/models/models.dart';
@@ -110,8 +110,6 @@ class _FavoriteTabState extends State<FavoriteTab> {
             children: [
               ItemRow(itemModel: _offersArray[0]),
               ItemRow(itemModel: _offersArray[1]),
-              ItemRow(itemModel: _offersArray[2]),
-              ItemRow(itemModel: _offersArray[3]),
             ],
           ),
         ),

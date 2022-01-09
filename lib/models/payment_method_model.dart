@@ -1,1 +1,3 @@
-class Payment {}
+class Payment {
+  
+}
