@@ -6,6 +6,7 @@ class StoreModel {
   String address;
   String category;
   double review;
+  int? status;
   StoreModel({
     required this.id,
     required this.name,
@@ -14,5 +15,6 @@ class StoreModel {
     required this.address,
     required this.category,
     required this.review,
+    this.status
   });
 }

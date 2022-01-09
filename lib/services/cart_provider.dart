@@ -4,7 +4,9 @@ import 'package:food_app/models/order_item_models.dart';
 
 class CartProvider extends ChangeNotifier {
   List<OrderItem> _items = [];
+  int? _storeId;
 
+  int? get storeId => _storeId;
   List<OrderItem> get items => _items;
   bool get showCart {
     return _items.length > 0 ? true : false;
@@ -36,15 +38,20 @@ class CartProvider extends ChangeNotifier {
       _items.add(OrderItem(
           quantity: quantity, item: item, totalPrice: item.price * quantity));
     }
+    _storeId = item.storeId;
     notifyListeners();
   }
 
   void updateItem(ItemModel item) {}
 
-  void addFirstItemToBasket(ItemModel item) {
-    // _items[item] = 1;
-    // service.addProduct(product);
-    // notifyListeners();
+  void addFirstItemToBasket(ItemModel item, int quantity) async {
+    List<OrderItem> list = [];
+    list.add(OrderItem(
+        quantity: quantity, item: item, totalPrice: item.price * quantity));
+    _items = list;
+    _storeId = item.storeId;
+
+    notifyListeners();
   }
 
   void removeItem(int index) {

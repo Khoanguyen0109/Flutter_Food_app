@@ -47,45 +47,25 @@ class _HomeTabState extends State<HomeTab> {
 
     _trendsArray = [
       ItemModel(
-          1,
-          'Meat Ball Pasta',
-          'Spicy Meat Ball Pasta',
-          'assets/images/temp_item1.png',
-          25,
-          3.5,
-          175.00,
-          "20-30 min",
-          _choiceList),
+          id: 1,
+          name: 'Meat Ball Pasta',
+          description: 'Spicy Meat Ball Pasta',
+          image: 'assets/images/temp_item1.png',
+          reviews: 25,
+          price: 3.5,
+          status: 1,
+          storeId: 1,
+          choicesList: _choiceList),
       ItemModel(
-          2,
-          'Steak',
-          'Special Beef Steak',
-          'assets/images/temp_item2.png',
-          32,
-          4.5,
-          190.00,
-          "30-35 min",
-          _choiceList),
-      ItemModel(
-          3,
-          'Tomato Pizza',
-          'Tomato Cheese Pizza',
-          'assets/images/temp_item3.png',
-          45,
-          1.2,
-          210.00,
-          "45-50 min",
-          _choiceList),
-      ItemModel(
-          4,
-          'Double Decker',
-          'Special Double Deck Burger',
-          'assets/images/temp_item4.png',
-          13,
-          4.7,
-          280.00,
-          "15-20 min",
-          _choiceList)
+          id: 2,
+          name: 'Meat Ball Pasta',
+          description: 'Spicy Meat Ball Pasta',
+          image: 'assets/images/temp_item1.png',
+          reviews: 25,
+          price: 3.5,
+          status: 1,
+          storeId: 1,
+          choicesList: _choiceList),
     ];
     _poppularStore = [
       StoreModel(
@@ -548,7 +528,7 @@ class _HomeTabState extends State<HomeTab> {
             children: [
               Image.asset(itemModel.image, height: 130, fit: BoxFit.fitHeight),
               SizedBox(height: 5),
-              Text(itemModel.title,
+              Text(itemModel.name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
@@ -566,23 +546,23 @@ class _HomeTabState extends State<HomeTab> {
                       fontWeight: FontWeight.w400,
                       color: textLightColor)),
               SizedBox(height: 5),
-              Center(
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset("assets/images/icon_fire.png",
-                        width: 18, height: 18),
-                    SizedBox(width: 5),
-                    Text(
-                        "${itemModel.calories} ${AppLocalizations.of(context)!.translate('calories')}",
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFFFB7754))),
-                  ],
-                ),
-              ),
+              // Center(
+              //   child: Row(
+              //     crossAxisAlignment: CrossAxisAlignment.center,
+              //     mainAxisSize: MainAxisSize.min,
+              //     children: [
+              //       Image.asset("assets/images/icon_fire.png",
+              //           width: 18, height: 18),
+              //       SizedBox(width: 5),
+              //       Text(
+              //           "${itemModel.calories} ${AppLocalizations.of(context)!.translate('calories')}",
+              //           style: TextStyle(
+              //               fontSize: 13,
+              //               fontWeight: FontWeight.w600,
+              //               color: Color(0xFFFB7754))),
+              //     ],
+              //   ),
+              // ),
               Expanded(child: SizedBox()),
               Center(
                 child: Row(

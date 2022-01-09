@@ -41,45 +41,25 @@ class _FavoriteTabState extends State<FavoriteTab> {
 
     _offersArray = [
       ItemModel(
-          1,
-          'Meat Ball Pasta',
-          'Spicy Meat Ball Pasta',
-          'assets/images/temp_item1.png',
-          25,
-          3.5,
-          175.00,
-          "20-30 min",
-          _choiceList),
+          id: 1,
+          name: 'Meat Ball Pasta',
+          description: 'Spicy Meat Ball Pasta',
+          image: 'assets/images/temp_item1.png',
+          reviews: 25,
+          price: 3.5,
+          status: 1,
+          storeId: 1,
+          choicesList: _choiceList),
       ItemModel(
-          2,
-          'Steak',
-          'Special Beef Steak',
-          'assets/images/temp_item2.png',
-          32,
-          4.5,
-          190.00,
-          "30-35 min",
-          _choiceList),
-      ItemModel(
-          3,
-          'Tomato Pizza',
-          'Tomato Cheese Pizza',
-          'assets/images/temp_item3.png',
-          45,
-          1.2,
-          210.00,
-          "45-50 min",
-          _choiceList),
-      ItemModel(
-          4,
-          'Double Decker',
-          'Special Double Deck Burger',
-          'assets/images/temp_item4.png',
-          13,
-          4.7,
-          280.00,
-          "15-20 min",
-          _choiceList)
+          id: 2,
+          name: 'Meat Ball Pasta',
+          description: 'Spicy Meat Ball Pasta',
+          image: 'assets/images/temp_item1.png',
+          reviews: 25,
+          price: 3.5,
+          status: 1,
+          storeId: 1,
+          choicesList: _choiceList),
     ];
   }
 
@@ -185,7 +165,7 @@ class _FavoriteTabState extends State<FavoriteTab> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 SizedBox(height: 5),
-                Text(itemModel.title,
+                Text(itemModel.name,
                     style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
@@ -512,13 +492,13 @@ class _FavoriteTabState extends State<FavoriteTab> {
                         Image.asset("assets/images/icon_alarm_clock.png",
                             width: 12, height: 12),
                         SizedBox(width: 5),
-                        Expanded(
-                          child: Text(itemModel.time,
-                              style: TextStyle(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w600,
-                                  color: textDarkColor)),
-                        )
+                        // Expanded(
+                        //   child: Text(itemModel.time,
+                        //       style: TextStyle(
+                        //           fontSize: 11,
+                        //           fontWeight: FontWeight.w600,
+                        //           color: textDarkColor)),
+                        // )
                       ],
                     ),
                   ),
@@ -531,7 +511,7 @@ class _FavoriteTabState extends State<FavoriteTab> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text(itemModel.title,
+                Text(itemModel.name,
                     textAlign: TextAlign.center,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -549,25 +529,25 @@ class _FavoriteTabState extends State<FavoriteTab> {
                         fontWeight: FontWeight.w400,
                         color: textLightColor)),
                 SizedBox(height: 5),
-                Center(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Image.asset("assets/images/icon_fire.png",
-                          width: 18, height: 18),
-                      SizedBox(width: 5),
-                      Text(
-                          "${itemModel.calories} ${AppLocalizations.of(context)!.translate('calories')}",
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFFFB7754))),
-                    ],
-                  ),
-                ),
+                // Center(
+                //   child: Row(
+                //     crossAxisAlignment: CrossAxisAlignment.center,
+                //     mainAxisSize: MainAxisSize.min,
+                //     children: [
+                //       Image.asset("assets/images/icon_fire.png",
+                //           width: 18, height: 18),
+                //       SizedBox(width: 5),
+                //       Text(
+                //           "${itemModel.calories} ${AppLocalizations.of(context)!.translate('calories')}",
+                //           maxLines: 1,
+                //           overflow: TextOverflow.ellipsis,
+                //           style: TextStyle(
+                //               fontSize: 13,
+                //               fontWeight: FontWeight.w600,
+                //               color: Color(0xFFFB7754))),
+                //     ],
+                //   ),
+                // ),
                 SizedBox(height: 10),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,

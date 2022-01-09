@@ -26,7 +26,7 @@ class OrderItemRow extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     color: textMidColor)),
             SizedBox(width: 10),
-            Text(orderItem.item.title,
+            Text(orderItem.item.name,
                 style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w400,

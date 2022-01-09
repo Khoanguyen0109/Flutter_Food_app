@@ -43,52 +43,52 @@ class _StoreViewState extends State<StoreView> {
 
     _offersArray = [
       ItemModel(
-          1,
-          'Meat Ball Pasta',
-          'Spicy Meat Ball Pasta',
-          'assets/images/temp_item1.png',
-          25,
-          3.5,
-          175.00,
-          "20-30 min",
-          _choiceList),
+          id: 1,
+          name: 'Meat Ball Pasta',
+          description: 'Spicy Meat Ball Pasta',
+          image: 'assets/images/temp_item1.png',
+          reviews: 25,
+          price: 3.5,
+          status: 1,
+          storeId: 1,
+          choicesList: _choiceList),
       ItemModel(
-          2,
-          'Steak',
-          'Special Beef Steak',
-          'assets/images/temp_item2.png',
-          32,
-          4.5,
-          190.00,
-          "30-35 min",
-          _choiceList),
+          id: 2,
+          name: 'Meat Ball Pasta',
+          description: 'Spicy Meat Ball Pasta',
+          image: 'assets/images/temp_item2.png',
+          reviews: 25,
+          price: 3.5,
+          status: 1,
+          storeId: 2,
+          choicesList: _choiceList),
       ItemModel(
-          3,
-          'Tomato Pizza',
-          'Tomato Cheese Pizza',
-          'assets/images/temp_item3.png',
-          45,
-          1.2,
-          210.00,
-          "45-50 min",
-          _choiceList),
+          id: 1,
+          name: 'Meat Ball Pasta',
+          description: 'Spicy Meat Ball Pasta',
+          image: 'assets/images/temp_item3.png',
+          reviews: 25,
+          price: 3.5,
+          status: 1,
+          storeId: 1,
+          choicesList: _choiceList),
       ItemModel(
-          4,
-          'Double Decker',
-          'Special Double Deck Burger',
-          'assets/images/temp_item4.png',
-          13,
-          4.7,
-          280.00,
-          "15-20 min",
-          _choiceList)
+          id: 1,
+          name: 'Meat Ball Pasta',
+          description: 'Spicy Meat Ball Pasta',
+          image: 'assets/images/temp_item1.png',
+          reviews: 25,
+          price: 3.5,
+          status: 1,
+          storeId: 1,
+          choicesList: _choiceList),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
-    print(deviceType);
+
     return Scaffold(
         backgroundColor: backgroundColor,
         floatingActionButton: Provider.of<CartProvider>(context).totalItem > 0

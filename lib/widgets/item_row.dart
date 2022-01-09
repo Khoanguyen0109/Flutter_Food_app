@@ -45,7 +45,7 @@ class ItemRow extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(itemModel.title,
+                  Text(itemModel.name,
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,

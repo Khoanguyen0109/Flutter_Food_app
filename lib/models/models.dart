@@ -9,17 +9,36 @@ class CategoryModel {
 
 class ItemModel {
   int id;
-  String title;
+  int storeId;
+  String name;
   String description;
   String image;
-  int calories;
   double reviews;
   double price;
-  String time;
+  int status;
   List<ChoiceModel>? choicesList;
+  ItemModel({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.image,
+    required this.reviews,
+    required this.price,
+    required this.status,
+    required this.storeId,
+    this.choicesList,
+  });
 
-  ItemModel(this.id, this.title, this.description, this.image, this.calories,
-      this.reviews, this.price, this.time, this.choicesList);
+  // ItemModel(
+  //     {required this.id,
+  //     required this.title,
+  //     required this.description,
+  //     required this.image,
+  //     required this.calories,
+  //     required this.reviews,
+  //     required this.price,
+  //     required this.status,
+  //     this.choicesList});
 }
 
 class ChoiceModel {

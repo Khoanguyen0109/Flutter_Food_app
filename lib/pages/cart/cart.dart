@@ -225,7 +225,7 @@ class _CartState extends State<Cart> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(height: 5),
-                  Text(orderItem.item.title,
+                  Text(orderItem.item.name,
                       style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,

@@ -27,6 +27,55 @@ class _ItemDetailState extends State<ItemDetail> {
   @override
   Widget build(BuildContext context) {
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
+
+    Future<void> _showMyDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Start new cart'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: const <Widget>[
+                  Text(
+                      'Would you like to clear the current cart of old store?'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.pop(context, 'Cancel'),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Provider.of<CartProvider>(context, listen: false)
+                      .addFirstItemToBasket(widget.itemModel!, quaytity);
+                  Navigator.popUntil(context, ModalRoute.withName('/store'));
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    void addItem() {
+      print(widget.itemModel!.image);
+      print(Provider.of<CartProvider>(context, listen: false).storeId);
+      if (Provider.of<CartProvider>(context, listen: false).storeId != null &&
+          widget.itemModel!.storeId !=
+              Provider.of<CartProvider>(context, listen: false).storeId) {
+        _showMyDialog();
+      } else {
+        Provider.of<CartProvider>(context, listen: false)
+            .addItem(widget.itemModel!, quaytity);
+        Navigator.pop(context);
+      }
+    }
+
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
@@ -65,7 +114,7 @@ class _ItemDetailState extends State<ItemDetail> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
-                                child: Text(widget.itemModel!.title,
+                                child: Text(widget.itemModel!.name,
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.w600,
@@ -116,24 +165,24 @@ class _ItemDetailState extends State<ItemDetail> {
                                   ],
                                 ),
                               ),
-                              Expanded(
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Image.asset("assets/images/icon_fire.png",
-                                        width: 18, height: 18),
-                                    SizedBox(width: 8),
-                                    Expanded(
-                                      child: Text(
-                                          "${widget.itemModel!.calories} ${AppLocalizations.of(context)!.translate('calories')}",
-                                          style: TextStyle(
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w600,
-                                              color: textDarkColor)),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              // Expanded(
+                              //   child: Row(
+                              //     crossAxisAlignment: CrossAxisAlignment.center,
+                              //     children: [
+                              //       Image.asset("assets/images/icon_fire.png",
+                              //           width: 18, height: 18),
+                              //       SizedBox(width: 8),
+                              //       Expanded(
+                              //         child: Text(
+                              //             "${widget.itemModel!.calories} ${AppLocalizations.of(context)!.translate('calories')}",
+                              //             style: TextStyle(
+                              //                 fontSize: 13,
+                              //                 fontWeight: FontWeight.w600,
+                              //                 color: textDarkColor)),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
                               Expanded(
                                 child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -143,13 +192,6 @@ class _ItemDetailState extends State<ItemDetail> {
                                         width: 18,
                                         height: 18),
                                     SizedBox(width: 8),
-                                    Expanded(
-                                      child: Text(widget.itemModel!.time,
-                                          style: TextStyle(
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w600,
-                                              color: textDarkColor)),
-                                    ),
                                   ],
                                 ),
                               ),
@@ -278,9 +320,10 @@ class _ItemDetailState extends State<ItemDetail> {
                   child: Icon(Icons.add, size: 30, color: Colors.white),
                   elevation: 12,
                   onPressed: () {
-                    Provider.of<CartProvider>(context, listen: false)
-                        .addItem(widget.itemModel!, quaytity);
-                    Navigator.pop(context);
+                    // Provider.of<CartProvider>(context, listen: false)
+                    //     .addItem(widget.itemModel!, quaytity);
+                    // Navigator.pop(context);
+                    addItem();
                   },
                 ),
               ),
