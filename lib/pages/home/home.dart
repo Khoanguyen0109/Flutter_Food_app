@@ -8,6 +8,7 @@ import 'package:food_app/providers/cart_provider.dart';
 import 'package:food_app/tabs/favorite_tab.dart';
 import 'package:food_app/tabs/home_tab.dart';
 import 'package:food_app/tabs/offer_tab.dart';
+import 'package:food_app/tabs/order_tab.dart';
 import 'package:food_app/tabs/profile_tab.dart';
 import 'package:food_app/widgets/build_bage.dart';
 import 'package:food_app/widgets/offer_dialog.dart';
@@ -91,7 +92,8 @@ class _HomeState extends State<Home> {
           },
           children: [
             HomeTab(),
-            OfferTab(),
+            // OfferTab(),
+            OrderTab(),
             SizedBox(),
             FavoriteTab(),
             ProfileTab()
@@ -131,6 +133,7 @@ class _HomeState extends State<Home> {
             items: <BottomNavigationBarItem>[
               _buildTab(0, "nav_home"),
               _buildTab(1, "nav_offers"),
+              // _buildTab(1, "nav_orders"),
               BottomNavigationBarItem(icon: SizedBox(), label: ''),
               _buildTab(3, "nav_wishlist"),
               _buildTab(4, "nav_account"),

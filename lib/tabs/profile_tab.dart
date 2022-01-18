@@ -24,9 +24,9 @@ class _ProfileTabState extends State<ProfileTab> {
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
     final authService = Provider.of<AuthService>(context);
 
-    void onSignout() async {
+    Future<void> onSignout() async {
       await authService.signOut();
-      Navigator.pushReplacementNamed(context, 'login');
+      Navigator.of(context).pushReplacementNamed('/login');
     }
 
     return Stack(
