@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/configs/GridFixedHeightDelegate.dart';
+import 'package:food_app/models/store_model.dart';
+import 'package:food_app/pages/store/store_row.dart';
 import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
 import 'package:food_app/models/models.dart';
 import 'package:food_app/configs/my_class.dart';
 import 'package:food_app/pages/cart/item_detail.dart';
+import 'package:food_app/services/store_services.dart';
 import 'package:food_app/widgets/counter_button.dart';
 import 'package:food_app/widgets/dotted_line.dart';
 import 'package:food_app/widgets/resolution_not_supported.dart';
@@ -28,6 +31,19 @@ class _ViewItemsState extends State<ViewItems> {
     CartModel(2, 'Steak', 'Special Beef Steak', 'assets/images/temp_item2.png',
         190.00),
   ];
+
+  List<StoreModel> _storeList = [];
+
+  getStoreByCategory() async {
+    // dynamic stores = await StoreServices.fetchStoreList();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +145,7 @@ class _ViewItemsState extends State<ViewItems> {
               child: TabBarView(
                 children: List<Widget>.generate(widget.categoryList!.length,
                     (int index) {
-                  final itemList = widget.categoryList![index].itemsList;
+                  final storeList = widget.categoryList![index].storeList;
                   _scrollController = new ScrollController();
                   _cartScrollController = new ScrollController();
 
@@ -137,30 +153,30 @@ class _ViewItemsState extends State<ViewItems> {
                     return Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: Scrollbar(
-                            controller: _scrollController,
-                            isAlwaysShown: (deviceType == DeviceType.MOBILE)
-                                ? false
-                                : true,
-                            child: GridView.builder(
-                              controller: _scrollController,
-                              physics: BouncingScrollPhysics(),
-                              padding: const EdgeInsetsDirectional.fromSTEB(
-                                  20, 10, 20, 30),
-                              itemCount: itemList!.length,
-                              gridDelegate: GridFixedHeightDelegate(
-                                crossAxisCount: gridCount,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
-                                height: 300,
-                              ),
-                              itemBuilder: (context, pos) {
-                                return _gridMenuItem(itemList[pos]);
-                              },
-                            ),
-                          ),
-                        ),
+                        // Expanded(
+                        //   child: Scrollbar(
+                        //     controller: _scrollController,
+                        //     isAlwaysShown: (deviceType == DeviceType.MOBILE)
+                        //         ? false
+                        //         : true,
+                        //     child: GridView.builder(
+                        //       controller: _scrollController,
+                        //       physics: BouncingScrollPhysics(),
+                        //       padding: const EdgeInsetsDirectional.fromSTEB(
+                        //           20, 10, 20, 30),
+                        //       itemCount: itemList!.length,
+                        //       gridDelegate: GridFixedHeightDelegate(
+                        //         crossAxisCount: gridCount,
+                        //         crossAxisSpacing: 10,
+                        //         mainAxisSpacing: 10,
+                        //         height: 300,
+                        //       ),
+                        //       itemBuilder: (context, pos) {
+                        //         return _gridMenuItem(itemList[pos]);
+                        //       },
+                        //     ),
+                        //   ),
+                        // ),
                         Container(
                           width: 250,
                           margin: const EdgeInsetsDirectional.fromSTEB(
@@ -210,9 +226,10 @@ class _ViewItemsState extends State<ViewItems> {
                         physics: BouncingScrollPhysics(),
                         padding: const EdgeInsetsDirectional.fromSTEB(
                             20, 10, 20, 30),
-                        itemCount: itemList!.length,
+                        itemCount: storeList!.length,
                         itemBuilder: (context, pos) {
-                          return _menuItem(itemList[pos]);
+                          // return _menuItem(itemList[pos]);
+                          return StoreRow(storeList[pos]);
                         },
                       ),
                     );
@@ -227,173 +244,173 @@ class _ViewItemsState extends State<ViewItems> {
     );
   }
 
-  Widget _menuItem(ItemModel itemModel) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 20)
-        ],
-        borderRadius: BorderRadius.circular(BORDER_RADIUS),
-        color: Colors.white,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 115,
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Align(
-                    alignment: AlignmentDirectional.topStart,
-                    child: Container(
-                      width: 90,
-                      height: 30,
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
-                              blurRadius: 5)
-                        ],
-                        color: Colors.white,
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Image.asset("assets/images/icon_alarm_clock.png",
-                              width: 15, height: 15),
-                          SizedBox(width: 5),
-                          // Expanded(
-                          //   child: Text(itemModel.time,
-                          //       style: TextStyle(
-                          //           fontSize: 12,
-                          //           fontWeight: FontWeight.w600,
-                          //           color: textDarkColor)),
-                          // )
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsetsDirectional.only(start: 15),
-                    child: Image.asset(itemModel.image,
-                        width: 100, height: 100, fit: BoxFit.fitHeight),
-                  ),
-                ]),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(itemModel.name,
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.5,
-                          color: textDarkColor)),
-                  Text(itemModel.description,
-                      style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
-                          color: textLightColor)),
-                  SizedBox(height: 5),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.asset("assets/images/icon_star.png",
-                                width: 18, height: 18),
-                            SizedBox(width: 8),
-                            Expanded(
-                                child: Text(itemModel.reviews.toString(),
-                                    style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w600,
-                                        color: textDarkColor))),
-                          ],
-                        ),
-                      ),
-                      // Expanded(
-                      //   child: Row(
-                      //     crossAxisAlignment: CrossAxisAlignment.center,
-                      //     children: [
-                      //       Image.asset("assets/images/icon_fire.png",
-                      //           width: 18, height: 18),
-                      //       SizedBox(width: 8),
-                      //       Expanded(
-                      //         child: Text(
-                      //             "${itemModel.calories} ${AppLocalizations.of(context)!.translate('calories')}",
-                      //             style: TextStyle(
-                      //                 fontSize: 13,
-                      //                 fontWeight: FontWeight.w600,
-                      //                 color: textDarkColor)),
-                      //       ),
-                      //     ],
-                      //   ),
-                      // ),
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(CURRENCY,
-                          style: TextStyle(
-                              fontSize: 17,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.5,
-                              color: primaryColor)),
-                      Text(itemModel.price.toStringAsFixed(2),
-                          style: TextStyle(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.5,
-                              color: textDarkColor)),
-                      Expanded(
-                        child: SizedBox(),
-                      ),
-                      SizedBox(
-                        height: 34,
-                        child: ElevatedButton(
-                            style: ButtonStyle(
-                                padding: MaterialStateProperty.all(
-                                    EdgeInsets.symmetric(horizontal: 30)),
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(17),
-                                )),
-                                backgroundColor:
-                                    MaterialStateProperty.all(primaryColor),
-                                textStyle: MaterialStateProperty.all(
-                                    TextStyle(color: Colors.white))),
-                            child: Text('ADD',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white)),
-                            onPressed: () {
-                              Navigator.pushNamed(context, "/item_detail",
-                                  arguments: itemModel);
-                            }),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          )
-        ],
-      ),
-    );
-  }
+  // Widget _menuItem(StoreModel storeModel) {
+  //   return Container(
+  //     margin: const EdgeInsets.symmetric(vertical: 8),
+  //     clipBehavior: Clip.antiAliasWithSaveLayer,
+  //     decoration: BoxDecoration(
+  //       boxShadow: [
+  //         BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 20)
+  //       ],
+  //       borderRadius: BorderRadius.circular(BORDER_RADIUS),
+  //       color: Colors.white,
+  //     ),
+  //     child: Row(
+  //       crossAxisAlignment: CrossAxisAlignment.start,
+  //       children: [
+  //         SizedBox(
+  //           width: 115,
+  //           child: Column(
+  //               crossAxisAlignment: CrossAxisAlignment.stretch,
+  //               children: [
+  //                 Align(
+  //                   alignment: AlignmentDirectional.topStart,
+  //                   child: Container(
+  //                     width: 90,
+  //                     height: 30,
+  //                     padding: const EdgeInsets.all(5),
+  //                     decoration: BoxDecoration(
+  //                       boxShadow: [
+  //                         BoxShadow(
+  //                             color: Colors.black.withOpacity(0.3),
+  //                             blurRadius: 5)
+  //                       ],
+  //                       color: Colors.white,
+  //                     ),
+  //                     child: Row(
+  //                       crossAxisAlignment: CrossAxisAlignment.center,
+  //                       children: [
+  //                         Image.asset("assets/images/icon_alarm_clock.png",
+  //                             width: 15, height: 15),
+  //                         SizedBox(width: 5),
+  //                         // Expanded(
+  //                         //   child: Text(itemModel.time,
+  //                         //       style: TextStyle(
+  //                         //           fontSize: 12,
+  //                         //           fontWeight: FontWeight.w600,
+  //                         //           color: textDarkColor)),
+  //                         // )
+  //                       ],
+  //                     ),
+  //                   ),
+  //                 ),
+  //                 Padding(
+  //                   padding: const EdgeInsetsDirectional.only(start: 15),
+  //                   child: Image.asset(itemModel.image,
+  //                       width: 100, height: 100, fit: BoxFit.fitHeight),
+  //                 ),
+  //               ]),
+  //         ),
+  //         Expanded(
+  //           child: Padding(
+  //             padding: const EdgeInsets.all(15),
+  //             child: Column(
+  //               crossAxisAlignment: CrossAxisAlignment.stretch,
+  //               children: [
+  //                 Text(itemModel.name,
+  //                     style: TextStyle(
+  //                         fontSize: 16,
+  //                         fontWeight: FontWeight.w600,
+  //                         letterSpacing: 0.5,
+  //                         color: textDarkColor)),
+  //                 Text(itemModel.description,
+  //                     style: TextStyle(
+  //                         fontSize: 13,
+  //                         fontWeight: FontWeight.w400,
+  //                         color: textLightColor)),
+  //                 SizedBox(height: 5),
+  //                 Row(
+  //                   children: [
+  //                     Expanded(
+  //                       child: Row(
+  //                         crossAxisAlignment: CrossAxisAlignment.center,
+  //                         children: [
+  //                           Image.asset("assets/images/icon_star.png",
+  //                               width: 18, height: 18),
+  //                           SizedBox(width: 8),
+  //                           Expanded(
+  //                               child: Text(itemModel.reviews.toString(),
+  //                                   style: TextStyle(
+  //                                       fontSize: 13,
+  //                                       fontWeight: FontWeight.w600,
+  //                                       color: textDarkColor))),
+  //                         ],
+  //                       ),
+  //                     ),
+  //                     // Expanded(
+  //                     //   child: Row(
+  //                     //     crossAxisAlignment: CrossAxisAlignment.center,
+  //                     //     children: [
+  //                     //       Image.asset("assets/images/icon_fire.png",
+  //                     //           width: 18, height: 18),
+  //                     //       SizedBox(width: 8),
+  //                     //       Expanded(
+  //                     //         child: Text(
+  //                     //             "${itemModel.calories} ${AppLocalizations.of(context)!.translate('calories')}",
+  //                     //             style: TextStyle(
+  //                     //                 fontSize: 13,
+  //                     //                 fontWeight: FontWeight.w600,
+  //                     //                 color: textDarkColor)),
+  //                     //       ),
+  //                     //     ],
+  //                     //   ),
+  //                     // ),
+  //                   ],
+  //                 ),
+  //                 SizedBox(height: 10),
+  //                 Row(
+  //                   crossAxisAlignment: CrossAxisAlignment.end,
+  //                   mainAxisSize: MainAxisSize.min,
+  //                   children: [
+  //                     Text(CURRENCY,
+  //                         style: TextStyle(
+  //                             fontSize: 17,
+  //                             fontWeight: FontWeight.w600,
+  //                             letterSpacing: 0.5,
+  //                             color: primaryColor)),
+  //                     Text(itemModel.price.toStringAsFixed(2),
+  //                         style: TextStyle(
+  //                             fontSize: 22,
+  //                             fontWeight: FontWeight.w600,
+  //                             letterSpacing: 0.5,
+  //                             color: textDarkColor)),
+  //                     Expanded(
+  //                       child: SizedBox(),
+  //                     ),
+  //                     SizedBox(
+  //                       height: 34,
+  //                       child: ElevatedButton(
+  //                           style: ButtonStyle(
+  //                               padding: MaterialStateProperty.all(
+  //                                   EdgeInsets.symmetric(horizontal: 30)),
+  //                               shape: MaterialStateProperty.all(
+  //                                   RoundedRectangleBorder(
+  //                                 borderRadius: BorderRadius.circular(17),
+  //                               )),
+  //                               backgroundColor:
+  //                                   MaterialStateProperty.all(primaryColor),
+  //                               textStyle: MaterialStateProperty.all(
+  //                                   TextStyle(color: Colors.white))),
+  //                           child: Text('ADD',
+  //                               style: TextStyle(
+  //                                   fontSize: 14,
+  //                                   fontWeight: FontWeight.w600,
+  //                                   color: Colors.white)),
+  //                           onPressed: () {
+  //                             Navigator.pushNamed(context, "/item_detail",
+  //                                 arguments: itemModel);
+  //                           }),
+  //                     )
+  //                   ],
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _gridMenuItem(ItemModel itemModel) {
     return Container(

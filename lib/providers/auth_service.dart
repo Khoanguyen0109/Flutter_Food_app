@@ -10,7 +10,10 @@ class AuthService extends ChangeNotifier {
     if (user == null) {
       return null;
     }
-    return User(uid: user.uid, email: user.email);
+    return User(
+        id: user.uid,
+        email: user.email != null ? user.email : 'sss',
+        name: 'sass');
   }
 
   Stream<User?>? get user {

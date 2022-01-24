@@ -30,7 +30,6 @@ class _HorizontalScrollListState extends State<HorizontalScrollList> {
   @override
   Widget build(BuildContext context) {
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
-    print(widget.list.length);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [

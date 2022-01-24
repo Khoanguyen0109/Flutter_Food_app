@@ -14,7 +14,7 @@ import 'package:food_app/widgets/dotted_line.dart';
 import 'package:provider/provider.dart';
 
 class ItemDetail extends StatefulWidget {
-  final ItemModel? itemModel;
+  final ItemModel itemModel;
   ItemDetail(this.itemModel);
 
   @override
@@ -63,8 +63,6 @@ class _ItemDetailState extends State<ItemDetail> {
     }
 
     void addItem() {
-      print(widget.itemModel!.image);
-      print(Provider.of<CartProvider>(context, listen: false).storeId);
       if (Provider.of<CartProvider>(context, listen: false).storeId != null &&
           widget.itemModel!.storeId !=
               Provider.of<CartProvider>(context, listen: false).storeId) {

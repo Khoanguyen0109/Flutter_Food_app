@@ -10,8 +10,9 @@ class OrderServices {
     return OrderModel.fromJson(data);
   }
 
-  static Future<List<OrderModel>> fetchOrderList(int id) async {
+  static Future<List<OrderModel>> fetchOrderList(int id, int? status) async {
     String url = '';
+
     final data = await ApiService.get(url, null);
     return [OrderModel.fromJson(data)];
   }

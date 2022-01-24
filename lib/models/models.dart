@@ -1,19 +1,26 @@
 import 'dart:convert';
 
+import 'package:food_app/models/store_model.dart';
+
 class CategoryModel {
   int id;
   String title;
   String image;
-  List<ItemModel>? itemsList;
-
-  CategoryModel(this.id, this.title, this.image, this.itemsList);
+  // List<ItemModel>? itemsList;
+  List<StoreModel> storeList;
+  CategoryModel(
+    this.id,
+    this.title,
+    this.image,
+    this.storeList,
+  );
 
   Map<String, dynamic> toMap() {
     return {
       'id': id,
       'title': title,
       'image': image,
-      'itemsList': itemsList?.map((x) => x.toMap()).toList(),
+      'storeList': storeList.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -22,10 +29,8 @@ class CategoryModel {
       map['id']?.toInt() ?? 0,
       map['title'] ?? '',
       map['image'] ?? '',
-      map['itemsList'] != null
-          ? List<ItemModel>.from(
-              map['itemsList']?.map((x) => ItemModel.fromMap(x)))
-          : null,
+      List<StoreModel>.from(
+          map['storeList']?.map((x) => StoreModel.fromMap(x))),
     );
   }
 

@@ -5,7 +5,8 @@ import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
 import 'package:food_app/configs/my_class.dart';
-import 'package:food_app/providers/auth_service.dart';
+import 'package:food_app/services/auth_services.dart';
+// import 'package:food_app/providers/auth_service.dart';
 import 'package:food_app/utils/toast_utls.dart';
 import 'package:food_app/widgets/resolution_not_supported.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,8 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   final _formkey = GlobalKey<FormState>();
   final emailController = TextEditingController();
+  final nameController = TextEditingController();
+
   final phoneController = TextEditingController();
 
   final passwordController = TextEditingController();
@@ -28,13 +31,20 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
-    final authService = Provider.of<AuthService>(context);
+    // final authService = Provider.of<AuthService>(context);
 
     void onSubmit() async {
       if (_formkey.currentState!.validate()) {
         try {
-          model.User? user = await authService.createUserWithEmailAndPassword(
-              emailController.text, passwordController.text);
+          // model.User? user = await authService.createUserWithEmailAndPassword(
+          //     emailController.text, passwordController.text);
+          model.User? user = await AuthServices.register({
+            'email': emailController.text,
+            'password': passwordController.text,
+            'phone': phoneController.text,
+            'name': nameController.text
+          });
+          print(user);
           if (user != null) {
             ToastUtils.toastSucessfull("Sing up Sucessfull");
             Navigator.pop(context);
@@ -111,22 +121,23 @@ class _SignUpState extends State<SignUp> {
                             color: primaryColor),
                       ),
                       SizedBox(height: 30),
-                      // TextFormField(
-                      //     decoration: InputDecoration(
-                      //       contentPadding: const EdgeInsets.all(0),
-                      //       labelText: AppLocalizations.of(context)!
-                      //           .translate('your_name'),
-                      //       labelStyle: TextStyle(
-                      //           fontWeight: FontWeight.w400,
-                      //           letterSpacing: 0.5,
-                      //           color: textLightColor),
-                      //     ),
-                      //     style: TextStyle(
-                      //         fontSize: 16,
-                      //         fontWeight: FontWeight.w600,
-                      //         color: textDarkColor),
-                      //     textCapitalization: TextCapitalization.words),
-                      // SizedBox(height: 20),
+                      TextFormField(
+                          controller: nameController,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(0),
+                            labelText: AppLocalizations.of(context)!
+                                .translate('your_name'),
+                            labelStyle: TextStyle(
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 0.5,
+                                color: textLightColor),
+                          ),
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: textDarkColor),
+                          textCapitalization: TextCapitalization.words),
+                      SizedBox(height: 20),
                       TextFormField(
                         controller: emailController,
                         validator: (value) => AuthUtils.validateEmail(value!),

@@ -40,6 +40,7 @@ dependencies:
   shared_preferences: ^2.0.11
   json_serializable: ^6.1.3
   firebase_messaging: ^11.2.5
+  flutter_dotenv: ^5.0.2
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +68,7 @@ flutter:
   uses-material-design: true
 
   assets:
+    - .env
     - localization/ar.json
     - localization/de.json
     - localization/en.json

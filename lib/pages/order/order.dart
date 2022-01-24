@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
 import 'package:food_app/configs/my_class.dart';
 import 'package:food_app/models/models.dart';
 import 'package:food_app/models/order_item_models.dart';
 import 'package:food_app/models/order_model.dart';
+import 'package:food_app/models/store_model.dart';
 import 'package:food_app/pages/order/widgets/find_shipper.dart';
 import 'package:food_app/pages/order/widgets/order_item_row.dart';
 import 'package:food_app/pages/order/widgets/order_map.dart';
@@ -15,37 +17,17 @@ import 'package:food_app/utils/constants.dart';
 import 'package:food_app/widgets/dotted_line.dart';
 
 class Order extends StatefulWidget {
-  Order({Key? key}) : super(key: key);
+  final OrderModel order;
+  Order({
+    Key? key,
+    required this.order,
+  }) : super(key: key);
 
   @override
   _OrderState createState() => _OrderState();
 }
 
 class _OrderState extends State<Order> {
-  late OrderModel order = new OrderModel(
-      id: 1,
-      deliveryAddress: "422 nguyen thi thap",
-      orderItems: [
-        new OrderItem(
-            quantity: 3,
-            item: ItemModel(
-                id: 1,
-                name: 'Meat Ball Pasta',
-                description: 'Spicy Meat Ball Pasta',
-                image: 'assets/images/temp_item1.png',
-                reviews: 25,
-                price: 3.5,
-                status: 1,
-                storeId: 1,
-                choicesList: null),
-            totalPrice: 122)
-      ],
-      delyveryCost: 2,
-      itemCost: 122,
-      total: 133,
-      paymentMethod: 0,
-      status: OrderStatus.FINDING);
-
   @override
   void initState() {
     // TODO: implement initState
@@ -83,12 +65,12 @@ class _OrderState extends State<Order> {
                         buildDetailRow(
                             AppLocalizations.of(context)!
                                 .translate('your_order_number')!,
-                            order.id.toString()),
+                            widget.order.id.toString()),
                         SizedBox(height: 5),
                         buildDetailRow(
                             AppLocalizations.of(context)!
                                 .translate('delivery_address')!,
-                            order.deliveryAddress),
+                            widget.order.deliveryAddress),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           child: DottedLine(dashWidth: 5, color: lineColor),
@@ -98,12 +80,12 @@ class _OrderState extends State<Order> {
                             physics: BouncingScrollPhysics(),
                             itemBuilder: (context, index) {
                               return OrderItemRow(
-                                  orderItem: order.orderItems[index]);
+                                  orderItem: widget.order.orderItems[index]);
                             },
                             separatorBuilder: (context, index) {
                               return SizedBox(height: 2);
                             },
-                            itemCount: order.orderItems.length),
+                            itemCount: widget.order.orderItems.length),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           child: DottedLine(dashWidth: 5, color: lineColor),
@@ -111,13 +93,13 @@ class _OrderState extends State<Order> {
                         buildDetailRow(
                             AppLocalizations.of(context)!
                                 .translate('sub_total')!,
-                            "${order.itemCost} ${CURRENCY} "),
+                            "${widget.order.itemCost} ${CURRENCY} "),
                         SizedBox(height: 5),
                         buildDetailRow(
                             AppLocalizations.of(context)!
                                 .translate('delivery_cost')!,
-                            order.delyveryCost != 0
-                                ? order.delyveryCost.toString()
+                            widget.order.delyveryCost != 0
+                                ? widget.order.delyveryCost.toString()
                                 : AppLocalizations.of(context)!
                                     .translate('free')!),
                         Padding(
@@ -145,7 +127,7 @@ class _OrderState extends State<Order> {
                                     color: textDarkColor)),
                             SizedBox(width: 10),
                             Expanded(
-                              child: Text("${order.total} ${CURRENCY}",
+                              child: Text("${widget.order.total} ${CURRENCY}",
                                   textAlign: TextAlign.end,
                                   style: TextStyle(
                                       fontSize: 14,
@@ -247,13 +229,13 @@ class _OrderState extends State<Order> {
   }
 
   Widget renderByOrderStatus() {
-    if (order.status == OrderStatus.FINDING) {
+    if (widget.order.status == OrderStatus.FINDING) {
       return FindingShipper();
     }
-    if (order.status == OrderStatus.PREPARING) {
+    if (widget.order.status == OrderStatus.PREPARING) {
       return PrepareOrder();
     }
-    if (order.status == OrderStatus.DELIVERD) {
+    if (widget.order.status == OrderStatus.DELIVERD) {
       // return OrderMap();
     }
     return Container();

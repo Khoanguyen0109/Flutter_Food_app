@@ -11,7 +11,7 @@ class ApiService {
       });
       final responseJson = jsonDecode(response.body);
 
-      return responseJson;
+      return response.body;
     } catch (e) {
       throw new Exception("AJAX ERROR");
     }
@@ -35,7 +35,7 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final responseJson = jsonDecode(response.body);
-        return responseJson;
+        return response.body;
       }
     } catch (e) {
       throw new Exception("AJAX ERROR");

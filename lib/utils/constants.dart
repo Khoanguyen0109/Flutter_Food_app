@@ -11,6 +11,19 @@ class OrderStatus {
   static final int DELIVERD = 3;
   static final int REVICED = 4;
 }
+// const String FINDING = 'FINDING';
+// const String PREPARING = 'PREPARING';
+// const String DELIVERING = 'DELIVERING';
+// const String DELIVERD = 'DELIVERD';
+// const String REVICED = 'REVICED';
+
+// const Map<String, int> OrderStatus = {
+//   FINDING: 0,
+//   PREPARING: 1,
+//   DELIVERING: 2,
+//   DELIVERD: 3,
+//   REVICED: 4
+// };
 
 class NotificationStaus {
   static int UNREAD = 0;

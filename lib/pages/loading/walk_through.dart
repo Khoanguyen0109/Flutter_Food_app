@@ -1,11 +1,16 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food_app/models/store_model.dart';
+import 'package:food_app/models/user_model.dart';
 import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
 import 'package:food_app/configs/my_class.dart';
+import 'package:food_app/providers/auth_provider.dart';
+import 'package:food_app/services/store_services.dart';
 import 'package:food_app/widgets/resolution_not_supported.dart';
+import 'package:provider/provider.dart';
 
 class WalkThrough extends StatefulWidget {
   @override
@@ -14,6 +19,7 @@ class WalkThrough extends StatefulWidget {
 
 class _WalkThroughState extends State<WalkThrough> {
   int _current = 0;
+  List<StoreModel>? _storeArray;
 
   List<String> sliderArray = [
     "assets/images/temp_discount1.png",
@@ -22,16 +28,21 @@ class _WalkThroughState extends State<WalkThrough> {
     "assets/images/temp_discount4.png"
   ];
 
-  void getData() async {
+  void getUser() async {
     Future.delayed(Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacementNamed(
+        context,
+        '/home',
+      );
     });
   }
 
   @override
   void initState() {
     super.initState();
-    getData();
+    // User user = Provider.of<AuthProvider>(context).getUser;
+
+    getUser();
   }
 
   @override

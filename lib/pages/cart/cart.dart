@@ -23,12 +23,24 @@ class _CartState extends State<Cart> {
   final _locationInputController = TextEditingController();
   String location = '';
   int paymentMethod = -1;
-  // List<CartModel> cartList = [
-  //   CartModel(1, 'Meat Ball Pasta', 'Spicy Meat Ball Pasta',
-  //       'assets/images/temp_item1.png', 175.00),
-  //   CartModel(2, 'Steak', 'Special Beef Steak', 'assets/images/temp_item2.png',
-  //       190.00),
-  // ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    int totalItem = Provider.of<CartProvider>(context).totalItem;
+    if (totalItem == 0) {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.pop(context);
+      });
+    }
+    super.didChangeDependencies();
+  }
 
   void selectPaymentMethod(int method) {
     setState(() {
@@ -41,6 +53,12 @@ class _CartState extends State<Cart> {
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
     List<OrderItem> cartList = Provider.of<CartProvider>(context).items;
     double grandTotal = Provider.of<CartProvider>(context).totalPay;
+
+    void updateCartItem(ItemModel item, int quantity) {
+      Provider.of<CartProvider>(context, listen: false)
+          .updateItem(item, quantity);
+    }
+
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: AppBar(
@@ -148,7 +166,8 @@ class _CartState extends State<Cart> {
                   scrollDirection: Axis.vertical,
                   itemCount: cartList.length,
                   itemBuilder: (context, index) {
-                    return menuItem(deviceType, cartList[index]);
+                    return menuItem(
+                        deviceType, cartList[index], updateCartItem);
                   },
                   separatorBuilder: (context, index) {
                     return SizedBox(width: 10);
@@ -199,7 +218,12 @@ class _CartState extends State<Cart> {
     );
   }
 
-  Widget menuItem(DeviceType deviceType, OrderItem orderItem) {
+  Widget menuItem(DeviceType deviceType, OrderItem orderItem, updateCartItem) {
+    void update(int quantity) {
+      print(quantity);
+      updateCartItem(orderItem.item, quantity);
+    }
+
     return Center(
       child: Container(
         width: (deviceType == DeviceType.WEB || deviceType == DeviceType.TABLET)
@@ -260,7 +284,11 @@ class _CartState extends State<Cart> {
                           width: 80,
                           height: 30,
                           child: CounterButton(
-                              minValue: 0, currentValue: orderItem.quantity))
+                            minValue: 0,
+                            currentValue: orderItem.quantity,
+                            cartUpdate: true,
+                            updateCartItem: update,
+                          ))
                     ],
                   ),
                 ],

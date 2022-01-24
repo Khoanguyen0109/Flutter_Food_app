@@ -63,7 +63,7 @@ class _StoreViewState extends State<StoreView> {
           storeId: 2,
           choicesList: _choiceList),
       ItemModel(
-          id: 1,
+          id: 3,
           name: 'Meat Ball Pasta',
           description: 'Spicy Meat Ball Pasta',
           image: 'assets/images/temp_item3.png',

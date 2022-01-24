@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:food_app/configs/GridFixedHeightDelegate.dart';
+import 'package:food_app/pages/order/order_list.dart';
 import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
 import 'package:food_app/models/models.dart';
 import 'package:food_app/configs/my_class.dart';
 import 'package:food_app/pages/cart/item_detail.dart';
-import 'package:food_app/widgets/order_row.dart';
+import 'package:food_app/pages/order/widgets/order_row.dart';
+import 'package:food_app/widgets/item_row.dart';
 import 'package:food_app/widgets/resolution_not_supported.dart';
 
 class OrderTab extends StatefulWidget {
@@ -94,21 +96,22 @@ class _OrderTabState extends State<OrderTab> {
       );
     } else if (deviceType == DeviceType.TABLET ||
         deviceType == DeviceType.MOBILE) {
-      return SafeArea(
-        child: Scrollbar(
-          controller: _scrollController,
-          isAlwaysShown: (deviceType == DeviceType.MOBILE) ? false : true,
-          child: ListView(
-            controller: _scrollController,
-            physics: BouncingScrollPhysics(),
-            padding: const EdgeInsets.all(20),
-            children: [
-              OrderRow(itemModel: _offersArray[0]),
-              OrderRow(itemModel: _offersArray[1]),
-            ],
-          ),
-        ),
-      );
+      return OrderList();
+      // return SafeArea(
+      //   child: Scrollbar(
+      //     controller: _scrollController,
+      //     isAlwaysShown: (deviceType == DeviceType.MOBILE) ? false : true,
+      //     child: ListView(
+      //       controller: _scrollController,
+      //       physics: BouncingScrollPhysics(),
+      //       padding: const EdgeInsets.all(20),
+      //       children: [
+      //         ItemRow(itemModel: _offersArray[0]),
+      //         ItemRow(itemModel: _offersArray[1]),
+      //       ],
+      //     ),
+      //   ),
+      // );
     } else
       return screenSizeNotSupported(context);
   }

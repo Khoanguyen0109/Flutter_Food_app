@@ -95,7 +95,9 @@ class _HomeState extends State<Home> {
             // OfferTab(),
             OrderTab(),
             SizedBox(),
-            FavoriteTab(),
+            OfferTab(),
+
+            // FavoriteTab(),
             ProfileTab()
           ],
         ),

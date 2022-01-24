@@ -3,10 +3,12 @@ import 'dart:convert';
 import 'package:food_app/models/models.dart';
 import 'package:food_app/models/order_item_models.dart';
 import 'package:food_app/models/shipper.dart';
+import 'package:food_app/models/store_model.dart';
 
 class OrderModel {
   int id;
   String deliveryAddress;
+  StoreModel storeModel;
   List<OrderItem> orderItems;
   double delyveryCost;
   double itemCost;
@@ -17,6 +19,7 @@ class OrderModel {
   OrderModel({
     required this.id,
     required this.deliveryAddress,
+    required this.storeModel,
     required this.orderItems,
     required this.delyveryCost,
     required this.itemCost,
@@ -57,6 +60,7 @@ class OrderModel {
     return {
       'id': id,
       'deliveryAddress': deliveryAddress,
+      'storeModel': storeModel.toMap(),
       'orderItems': orderItems.map((x) => x.toMap()).toList(),
       'delyveryCost': delyveryCost,
       'itemCost': itemCost,
@@ -71,7 +75,9 @@ class OrderModel {
     return OrderModel(
       id: map['id']?.toInt() ?? 0,
       deliveryAddress: map['deliveryAddress'] ?? '',
-      orderItems: List<OrderItem>.from(map['orderItems']?.map((x) => OrderItem.fromMap(x))),
+      storeModel: StoreModel.fromMap(map['storeModel']),
+      orderItems: List<OrderItem>.from(
+          map['orderItems']?.map((x) => OrderItem.fromMap(x))),
       delyveryCost: map['delyveryCost']?.toDouble() ?? 0.0,
       itemCost: map['itemCost']?.toDouble() ?? 0.0,
       total: map['total']?.toDouble() ?? 0.0,
@@ -83,5 +89,6 @@ class OrderModel {
 
   String toJson() => json.encode(toMap());
 
-  factory OrderModel.fromJson(String source) => OrderModel.fromMap(json.decode(source));
+  factory OrderModel.fromJson(String source) =>
+      OrderModel.fromMap(json.decode(source));
 }

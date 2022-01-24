@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:food_app/models/user_model.dart';
 import 'package:food_app/pages/auth/login.dart';
 import 'package:food_app/pages/home/home.dart';
+import 'package:food_app/pages/home/shipper_home.dart';
 import 'package:food_app/providers/auth_service.dart';
 import 'package:food_app/widgets/loading.dart';
 import 'package:provider/provider.dart';
@@ -17,10 +18,11 @@ class AuthWrapper extends StatelessWidget {
         builder: (_, AsyncSnapshot<User?> snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             final User? user = snapshot.data;
-            if (user != null) {
-              print(user.email);
-            }
-            return user == null ? Login() : Home();
+            String role = 'user';
+
+            return user == null
+                ? Login()
+                : (role == 'shipper' ? ShipperHome() : Home());
           } else {
             return Loading();
           }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:food_app/models/store_model.dart';
 import 'package:food_app/providers/app_localizations.dart';
@@ -9,6 +11,7 @@ import 'package:food_app/pages/home/filter.dart';
 import 'package:food_app/pages/cart/item_detail.dart';
 import 'package:food_app/pages/store/horizontal_list.dart';
 import 'package:food_app/pages/store/store_row.dart';
+import 'package:food_app/services/store_services.dart';
 
 class HomeTab extends StatefulWidget {
   @override
@@ -18,19 +21,77 @@ class HomeTab extends StatefulWidget {
 class _HomeTabState extends State<HomeTab> {
   ScrollController _scrollController = new ScrollController();
   ScrollController _popularScrollController = new ScrollController();
-
+  final searchController = TextEditingController();
+  Timer? _debouce;
+  String searchText = '';
+  bool onSearching = false;
   List<SubChoiceModel>? _subChoiceList;
   List<ChoiceModel>? _choiceList;
   List<ItemModel>? _trendsArray;
   List<StoreModel>? _storeArray;
   List<StoreModel>? _poppularStore;
+  bool loading = false;
 
   List<CategoryModel>? _categoriesArray;
 
+  Future<List<StoreModel>> getStoreList() async {
+    List<StoreModel> storeList = [];
+    return storeList;
+  }
+
+  _onSearchChange() async {
+    if (_debouce?.isActive ?? false) _debouce?.cancel();
+    _debouce = Timer(const Duration(microseconds: 500), () async {
+      if (searchText != searchController.text) {
+        dynamic storeList = await getStoreList();
+        setState(() {
+          _storeArray = storeList;
+          searchText = searchController.text;
+          onSearching = searchController.text == '' ? false : true;
+        });
+      }
+    });
+  }
+
+  Future<dynamic> _fetchStoreList() async {
+    final data = await StoreServices.fetchStoreList(null, null);
+    setState(() {
+      _storeArray = data;
+    });
+    return data;
+  }
+
+  Future<dynamic> _fetchPopularStore() async {
+    final data = await StoreServices.fetchPopularStoreList();
+    setState(() {
+      _poppularStore = data;
+    });
+    return data;
+  }
+
+  _initData() async {
+    setState(() {
+      loading = true;
+    });
+    Future.wait([_fetchStoreList(), _fetchPopularStore()])
+        .then((List responses) {
+      print(responses);
+      setState(() {
+        loading = false;
+      });
+    }).catchError((e) {
+      print(e.toString());
+      setState(() {
+        loading = false;
+      });
+    });
+  }
+
   @override
   void initState() {
+    searchController.addListener(_onSearchChange);
     super.initState();
-
+    // _initData();
     _subChoiceList = [
       SubChoiceModel(1, 'Meat Ball Pasta', 5.00),
       SubChoiceModel(2, 'Meat', 9.00),
@@ -74,7 +135,7 @@ class _HomeTabState extends State<HomeTab> {
           image: 'assets/images/temp_item4.png',
           description: "156 Nguyen thi thap  ",
           address: "156 Nguyen thi thap  ",
-          category: "rice",
+          category: 0,
           review: 5.0),
       StoreModel(
           id: 2,
@@ -82,7 +143,7 @@ class _HomeTabState extends State<HomeTab> {
           image: 'assets/images/temp_item4.png',
           description: "156 Nguyen thi thap  ",
           address: "156 Nguyen thi thap 156 Nguyen thi thap  ",
-          category: "rice",
+          category: 0,
           review: 5.0),
       StoreModel(
           id: 3,
@@ -90,7 +151,7 @@ class _HomeTabState extends State<HomeTab> {
           image: 'assets/images/temp_item4.png',
           description: "156 Nguyen thi thap  ",
           address: "156 Nguyen thi thap  ",
-          category: "rice",
+          category: 0,
           review: 5.0)
     ];
 
@@ -101,7 +162,7 @@ class _HomeTabState extends State<HomeTab> {
           image: 'assets/images/temp_item4.png',
           description: "156 Nguyen thi thap  ",
           address: "156 Nguyen thi thap  ",
-          category: "rice",
+          category: 0,
           review: 5.0),
       StoreModel(
           id: 2,
@@ -109,30 +170,36 @@ class _HomeTabState extends State<HomeTab> {
           image: 'assets/images/temp_item4.png',
           description: "156 Nguyen thi thap  ",
           address: "156 Nguyen thi thap 156 Nguyen thi thap  ",
-          category: "rice",
+          category: 0,
           review: 5.0),
       StoreModel(
           id: 3,
           name: "Papaxot",
           image: 'assets/images/temp_item4.png',
           description: "156 Nguyen thi thap  ",
-          category: "rice",
+          category: 0,
           address: "156 Nguyen thi thap  ",
           review: 5.0)
     ];
 
     _categoriesArray = [
-      CategoryModel(1, 'Pizza', 'assets/images/temp_item5.png', _trendsArray),
+      CategoryModel(1, 'Rice', 'assets/images/temp_item5.png', _storeArray!),
+      CategoryModel(2, 'Noodles', 'assets/images/temp_item6.png', _storeArray!),
+      CategoryModel(3, 'Drink', 'assets/images/temp_item4.png', _storeArray!),
       CategoryModel(
-          2, 'Desi Food', 'assets/images/temp_item6.png', _trendsArray),
-      CategoryModel(3, 'Burger', 'assets/images/temp_item4.png', _trendsArray),
-      CategoryModel(
-          4, 'Roll & Shawarma', 'assets/images/temp_item7.png', _trendsArray),
-      CategoryModel(
-          5, 'Italian Food', 'assets/images/temp_item8.png', _trendsArray),
-      CategoryModel(
-          6, 'Chinese Food', 'assets/images/temp_item9.png', _trendsArray)
+          4, 'Fast Food', 'assets/images/temp_item7.png', _storeArray!),
+      CategoryModel(5, 'Healthy', 'assets/images/temp_item8.png', _storeArray!),
+      CategoryModel(6, 'Snacks', 'assets/images/temp_item9.png', _storeArray!)
     ];
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    searchController.removeListener(_onSearchChange);
+    searchController.dispose();
+    _debouce?.cancel();
+    super.dispose();
   }
 
   @override
@@ -188,6 +255,7 @@ class _HomeTabState extends State<HomeTab> {
                                 SizedBox(width: 10),
                                 Expanded(
                                   child: TextField(
+                                    controller: searchController,
                                     decoration: InputDecoration.collapsed(
                                       hintText: AppLocalizations.of(context)!
                                           .translate("search"),
@@ -295,6 +363,7 @@ class _HomeTabState extends State<HomeTab> {
                           SizedBox(width: 10),
                           Expanded(
                             child: TextField(
+                              controller: searchController,
                               decoration: InputDecoration.collapsed(
                                 hintText: AppLocalizations.of(context)!
                                     .translate("search"),
@@ -357,116 +426,51 @@ class _HomeTabState extends State<HomeTab> {
                 physics: BouncingScrollPhysics(),
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 children: [
-                  HorizontalScrollList(
-                      title: "Popular",
-                      routeName: "/view_items",
-                      list: _storeArray as List<dynamic>),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.only(
-                            start: (deviceType != DeviceType.WEB) ? 20 : 30,
-                            end: (deviceType != DeviceType.WEB) ? 10 : 30),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                                AppLocalizations.of(context)!
-                                    .translate("popular_choices")!,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w700,
-                                    letterSpacing: 0.5,
-                                    color: primaryColor)),
-                            TextButton(
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Colors.transparent),
-                                  padding: MaterialStateProperty.all(
-                                      EdgeInsets.symmetric(horizontal: 20))),
-                              child: Text(
-                                  AppLocalizations.of(context)!
-                                      .translate("btn_show_all")!,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: textMidColor)),
-                              onPressed: () {
-                                Navigator.pushNamed(context, "/view_items",
-                                    arguments: _categoriesArray);
-                              },
-                            ),
-                          ],
-                        ),
+                      Visibility(
+                        visible: !onSearching,
+                        child: HorizontalScrollList(
+                            title: "Popular",
+                            routeName: "/view_items",
+                            list: _storeArray as List<dynamic>),
                       ),
-                      SizedBox(
-                        height: 295,
-                        child: Stack(
+                      Visibility(
+                        visible: !onSearching,
+                        child: HorizontalScrollList(
+                            title: "Popular",
+                            routeName: "/view_items",
+                            list: _storeArray as List<dynamic>),
+                      ),
+                      SizedBox(height: 20),
+                      Visibility(
+                        visible: !onSearching,
+                        child: Column(
                           children: [
-                            ListView.separated(
+                            Title(deviceType: deviceType, title: "menu"),
+                            GridView.builder(
+                              shrinkWrap: true,
                               physics: BouncingScrollPhysics(),
-                              padding: EdgeInsets.symmetric(
-                                  horizontal:
-                                      (deviceType != DeviceType.WEB) ? 15 : 30),
-                              scrollDirection: Axis.horizontal,
-                              controller: _popularScrollController,
-                              itemCount: _trendsArray!.length,
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  (deviceType != DeviceType.WEB) ? 8 : 25,
+                                  8,
+                                  (deviceType != DeviceType.WEB) ? 8 : 25,
+                                  30),
+                              itemCount: _categoriesArray!.length,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: gridCount,
+                                childAspectRatio: 1,
+                              ),
                               itemBuilder: (context, index) {
-                                return popularItem(
-                                    _trendsArray![index], deviceType);
-                              },
-                              separatorBuilder: (context, index) {
-                                return SizedBox(width: 10);
+                                return categoryItem(_categoriesArray![index]);
                               },
                             ),
-                            Align(
-                              alignment: AlignmentDirectional.centerEnd,
-                              child: Container(
-                                width: 30,
-                                margin: EdgeInsets.all(
-                                    (deviceType != DeviceType.WEB) ? 5 : 30),
-                                child: FloatingActionButton(
-                                  heroTag: "scroll_next",
-                                  materialTapTargetSize:
-                                      MaterialTapTargetSize.shrinkWrap,
-                                  elevation: 2.0,
-                                  backgroundColor: primaryColor,
-                                  child: Icon(Icons.navigate_next,
-                                      color: Colors.white, size: 20),
-                                  onPressed: () {
-                                    _popularScrollController.animateTo(
-                                        _popularScrollController.offset + 180,
-                                        duration: Duration(milliseconds: 500),
-                                        curve: Curves.ease);
-                                  },
-                                ),
-                              ),
-                            )
                           ],
                         ),
                       ),
-                      SizedBox(height: 20),
-                      Title(deviceType: deviceType, title: "menu"),
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: BouncingScrollPhysics(),
-                        padding: EdgeInsetsDirectional.fromSTEB(
-                            (deviceType != DeviceType.WEB) ? 8 : 25,
-                            8,
-                            (deviceType != DeviceType.WEB) ? 8 : 25,
-                            30),
-                        itemCount: _categoriesArray!.length,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: gridCount,
-                          childAspectRatio: 1,
-                        ),
-                        itemBuilder: (context, index) {
-                          return categoryItem(_categoriesArray![index]);
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      Title(deviceType: deviceType, title: "menu"),
+                      SizedBox(height: 30),
                       ListView.separated(
                           shrinkWrap: true,
                           physics: BouncingScrollPhysics(),

@@ -6,19 +6,18 @@ class StoreModel {
   String description;
   String image;
   String address;
-  String category;
+  int category;
   double review;
   int? status;
-  StoreModel({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.image,
-    required this.address,
-    required this.category,
-    required this.review,
-    this.status
-  });
+  StoreModel(
+      {required this.id,
+      required this.name,
+      required this.description,
+      required this.image,
+      required this.address,
+      required this.category,
+      required this.review,
+      this.status});
 
   Map<String, dynamic> toMap() {
     return {
@@ -48,5 +47,6 @@ class StoreModel {
 
   String toJson() => json.encode(toMap());
 
-  factory StoreModel.fromJson(String source) => StoreModel.fromMap(json.decode(source));
+  factory StoreModel.fromJson(String source) =>
+      StoreModel.fromMap(json.decode(source));
 }
