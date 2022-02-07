@@ -49,8 +49,9 @@ class _SignUpState extends State<SignUp> {
             ToastUtils.toastSucessfull("Sing up Sucessfull");
             Navigator.pop(context);
           }
-        } on FirebaseAuthException catch (error) {
-          ToastUtils.toastFailed(AuthUtils.errorMessage(error.code));
+        } on Exception catch (error) {
+          print(error);
+          ToastUtils.toastFailed(AuthUtils.errorMessage(error.toString()));
         }
       }
     }

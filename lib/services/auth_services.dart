@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:food_app/models/user_model.dart';
+import 'package:food_app/pages/auth/utls.dart';
 import 'package:food_app/utils/apiService.dart';
+import 'package:food_app/utils/toast_utls.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,16 +21,21 @@ class AuthServices {
         },
         body: json.encode(data),
       );
-      // final responseJson = jsonDecode(response.body);
-      // print(responseJson.toString());
-      return User.fromJson(response.body);
+      final responseJson = jsonDecode(response.body);
+      if (response.statusCode == 400) {
+        ToastUtils.toastFailed(responseJson['errors'][0]['detail']);
+      }
+      if (response.statusCode == 201) {
+        print(responseJson['data']);
+        return User.fromMap(responseJson['data']);
+      }
     } catch (e) {
       print(e);
-      // throw new Exception("AJAX ERROR");
+      ToastUtils.toastFailed('Something went wrong');
     }
   }
 
-  static Future<User?> login(String email, password) async {
+  static Future<String?> login(String email, password) async {
     try {
       final response = await http.post(
         Uri.parse('$api' + 'auth/login'),
@@ -37,36 +45,70 @@ class AuthServices {
         body: jsonEncode(<String, String>{
           'username': email,
           'password': password,
-          'guard': 'user'
+          // 'guard': 'user'
         }),
       );
-      print(response.statusCode);
+      final responseJson = jsonDecode(response.body);
+
+      print(responseJson);
       if (response.statusCode == 200) {
         print(response);
-        return User.fromJson(response.body);
+        print(responseJson);
+
+        return responseJson['access_token'];
+      }
+      if (response.statusCode == 401) {
+        ToastUtils.toastFailed('Wrong email or password');
       }
     } catch (e) {
       print(e.toString());
     }
   }
 
-  Future<User?> getUser(String token) async {
+  static Future<User?> getUser(String token) async {
     try {
-      const url = '';
+      String url = 'auth/profile';
       final response = await ApiService.get(url, {token: token});
-      return User.fromJson(response.body);
-    } catch (e) {}
+      print(response);
+      return User.fromMap(response['data']);
+    } catch (e) {
+      print(e.toString());
+      // ToastUtils.toastFailed('Something went wrong');
+    }
   }
 
-  Future signOut() async {
+  static Future updateUserInfo(Map<String, dynamic> data) async {
     try {
-      const url = '';
-      final response = await ApiService.get(url, null);
-      final responseJson = jsonDecode(response.body);
-      SharedPreferences preferences = await SharedPreferences.getInstance();
-      await preferences.clear();
+      String url = '$api' + 'auth/profile';
+      final response = await ApiService.update(url, data);
+      print(response);
+      return User.fromMap(response['data']);
+    } catch (e) {
+      print(e.toString());
+      ToastUtils.toastFailed('Something went wrong');
+    }
+  }
 
-      return User.fromJson(responseJson);
+  static Future changePassword(Map<String, dynamic> data) async {
+    try {
+      String url = '$api' + 'auth/profile';
+      final response = await ApiService.update(url, data);
+      print(response);
+      return User.fromMap(response['data']);
+    } catch (e) {
+      print(e.toString());
+      ToastUtils.toastFailed('Something went wrong');
+    }
+  }
+
+  static Future signOut() async {
+    try {
+      // const url = '';
+      // final response = await ApiService.get(url, null);
+      // final responseJson = jsonDecode(response.body);
+
+      // return User.fromJson(responseJson);
+      return null;
     } catch (e) {}
   }
 }

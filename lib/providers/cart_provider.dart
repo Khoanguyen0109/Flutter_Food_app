@@ -5,7 +5,7 @@ import 'package:food_app/models/order_item_models.dart';
 class CartProvider extends ChangeNotifier {
   List<OrderItem> _items = [];
   int? _storeId;
-
+  int? paymentmethod;
   int? get storeId => _storeId;
   List<OrderItem> get items => _items;
   bool get showCart {

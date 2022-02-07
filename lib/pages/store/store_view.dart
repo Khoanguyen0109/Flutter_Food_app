@@ -99,7 +99,7 @@ class _StoreViewState extends State<StoreView> {
                   children: [
                     Positioned.fill(
                       child: FloatingActionButton(
-                        heroTag: "cart_btn",
+                        heroTag: "cart_btn_detail1",
                         onPressed: () => Navigator.pushNamed(context, "/cart"),
                         backgroundColor: primaryColor,
                         child: Image.asset("assets/images/nav_cart.png",
@@ -133,41 +133,94 @@ class _StoreViewState extends State<StoreView> {
                     pinned: true,
                     snap: false,
                     floating: false,
-                    backgroundColor: Colors.black45,
-                    // title: Text(
-                    //   widget.storeModel.name,
-                    //   style: TextStyle(color: Colors.white, fontSize: 30),
-                    // ),
+                    backgroundColor: Colors.white10,
+                    title: Center(
+                      child: Text(
+                        widget.storeModel.name,
+                        style: TextStyle(
+                            color: primaryColor,
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
                     expandedHeight: 200.0,
                     flexibleSpace: FlexibleSpaceBar(
-                        title: Text(
-                          widget.storeModel.name,
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w600,
-                              letterSpacing: 0.5,
-                              color: Colors.white),
-                          textAlign: TextAlign.center,
-                        ),
-                        background: Image.asset("assets/images/temp_item1.png",
-                            width: 18, height: 18)),
+                        background: Opacity(
+                      opacity: 0.4,
+                      child: Image.asset("assets/images/temp_item1.png",
+                          width: 18, height: 18),
+                    )),
                   ),
                   SliverToBoxAdapter(
                     child: Container(
-                      width: 50,
-                      color: Colors.white,
-                      child: Column(
-                        children: [
-                          Row(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsetsDirectional.only(
+                              start: 20, end: 10, top: 10, bottom: 20),
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 20)
+                              ],
+                              borderRadius: BorderRadiusDirectional.all(
+                                  Radius.circular(CONTAINER_RADIUS)),
+                              color: Colors.white),
+                          child: Column(
                             children: [
-                              // Text("Address"),
-                              // SizedBox(width: 10,)
-                              Text(widget.storeModel.address),
+                              Text('Store info',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.5,
+                                      color: textDarkColor)),
+                              SizedBox(
+                                height: 15,
+                              ),
+                              Row(
+                                children: [
+                                  Text('Address: ',
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          letterSpacing: 0.5,
+                                          color: textDarkColor)),
+                                  Expanded(
+                                    child: Text(
+                                      widget.storeModel.address,
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      softWrap: false,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Text('Descrption: ',
+                                      overflow: TextOverflow.ellipsis,
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          letterSpacing: 0.5,
+                                          color: textDarkColor)),
+                                  Expanded(
+                                    child: Text(
+                                      widget.storeModel.address,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      softWrap: false,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
-                          ),
-                          // Text("asdsadss"),
-                        ],
-                      ),
+                          )),
                     ),
                   ),
                   SliverFixedExtentList(

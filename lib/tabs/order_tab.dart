@@ -96,7 +96,21 @@ class _OrderTabState extends State<OrderTab> {
       );
     } else if (deviceType == DeviceType.TABLET ||
         deviceType == DeviceType.MOBILE) {
-      return OrderList();
+      return Column(
+        children: [
+          SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text('Order List',
+                style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: 0.5,
+                    color: textDarkColor)),
+          ),
+          OrderList(),
+        ],
+      );
       // return SafeArea(
       //   child: Scrollbar(
       //     controller: _scrollController,

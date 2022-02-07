@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class StoreModel {
-  int id;
+  String id;
   String name;
   String description;
   String image;
@@ -34,12 +34,12 @@ class StoreModel {
 
   factory StoreModel.fromMap(Map<String, dynamic> map) {
     return StoreModel(
-      id: map['id']?.toInt() ?? 0,
+      id: map['id'] ?? '',
       name: map['name'] ?? '',
       description: map['description'] ?? '',
       image: map['image'] ?? '',
       address: map['address'] ?? '',
-      category: map['category'] ?? '',
+      category: map['category'] ?? -1,
       review: map['review']?.toDouble() ?? 0.0,
       status: map['status']?.toInt(),
     );

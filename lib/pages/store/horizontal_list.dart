@@ -94,7 +94,7 @@ class _HorizontalScrollListState extends State<HorizontalScrollList> {
                     margin:
                         EdgeInsets.all((deviceType != DeviceType.WEB) ? 5 : 30),
                     child: FloatingActionButton(
-                      heroTag: "scroll_next_store",
+                      heroTag: null,
                       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       elevation: 2.0,
                       backgroundColor: primaryColor,

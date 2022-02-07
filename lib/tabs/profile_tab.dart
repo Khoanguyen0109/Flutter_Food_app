@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/models/user_model.dart';
 import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
@@ -10,7 +11,8 @@ import 'package:food_app/pages/location/my_address.dart';
 import 'package:food_app/pages/user/notifications.dart';
 import 'package:food_app/pages/order/order_tracking1.dart';
 import 'package:food_app/pages/order/order_tracking2.dart';
-import 'package:food_app/providers/auth_service.dart';
+import 'package:food_app/providers/auth_provider.dart';
+import 'package:food_app/services/auth_services.dart';
 import 'package:provider/provider.dart';
 
 class ProfileTab extends StatefulWidget {
@@ -22,10 +24,11 @@ class _ProfileTabState extends State<ProfileTab> {
   @override
   Widget build(BuildContext context) {
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
-    final authService = Provider.of<AuthService>(context);
-
+    // final authService = Provider.of<AuthService>(context);
+    final authProvider = Provider.of<AuthProvider>(context);
+    User user = authProvider.getUser;
     Future<void> onSignout() async {
-      await authService.signOut();
+      authProvider.signOut();
       Navigator.of(context).pushReplacementNamed('/login');
     }
 
@@ -57,7 +60,7 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                           ),
                           SizedBox(height: 10),
-                          Text('Sohail Asghar',
+                          Text(user.name,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 22,
@@ -65,7 +68,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                   letterSpacing: 0.5,
                                   color: Colors.white)),
                           SizedBox(height: 10),
-                          Text('Nothing brings people together like\nGood Food',
+                          Text(user.email,
                               textAlign: TextAlign.center,
                               style:
                                   TextStyle(fontSize: 16, color: Colors.white)),
@@ -130,6 +133,9 @@ class _ProfileTabState extends State<ProfileTab> {
                                             'order_tracking_screen2')!,
                                         deviceType,
                                         action: goToOrderTracking2),
+                                    profileItem(
+                                        Icons.history, 'Order List', deviceType,
+                                        action: goToOrderList),
                                     separator(),
                                     profileItem(
                                         Icons.notifications,
@@ -188,6 +194,10 @@ class _ProfileTabState extends State<ProfileTab> {
         )
       ],
     );
+  }
+
+  goToOrderList(DeviceType deviceType) {
+    Navigator.pushNamed(context, "/orderList");
   }
 
   goToMyAddress(DeviceType deviceType) {

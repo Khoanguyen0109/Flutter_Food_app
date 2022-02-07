@@ -5,9 +5,11 @@ import 'package:food_app/utils/apiService.dart';
 class StoreServices {
   static Future<List<StoreModel>> fetchStoreList(
       int? category, String? search) async {
-    String url = '';
+    String url = 'merchant';
+    print(url);
     final data = await ApiService.get(url, null);
-    return [StoreModel.fromJson(data)];
+    print(data);
+    return [StoreModel.fromMap(data)];
   }
 
   static Future<List<StoreModel>> fetchPopularStoreList() async {

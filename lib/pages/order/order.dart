@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,8 +14,12 @@ import 'package:food_app/pages/order/widgets/order_item_row.dart';
 import 'package:food_app/pages/order/widgets/order_map.dart';
 import 'package:food_app/pages/order/widgets/perpare_order.dart';
 import 'package:food_app/providers/app_localizations.dart';
+import 'package:food_app/providers/auth_provider.dart';
+import 'package:food_app/providers/notification_provider.dart';
+import 'package:food_app/services/order_services.dart';
 import 'package:food_app/utils/constants.dart';
 import 'package:food_app/widgets/dotted_line.dart';
+import 'package:provider/provider.dart';
 
 class Order extends StatefulWidget {
   final OrderModel order;
@@ -28,217 +33,217 @@ class Order extends StatefulWidget {
 }
 
 class _OrderState extends State<Order> {
+  int status = 1;
+  NotificationProvider? notificationProvider;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    notificationProvider = context.read<NotificationProvider>();
+    notificationProvider?.addListener(notificationListener);
+  }
+
+  void notificationListener() {
+    if (notificationProvider != null) {
+      _getOrder(1);
+    }
+  }
+
+  Future<OrderModel?> _getOrder(id) async {
+    print('calll');
+    try {
+      OrderModel? res = await OrderServices.fetchOrderDetail(id);
+      return res;
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
+    onBack() {
+      Provider.of<AuthProvider>(context, listen: false).backFromOrder();
+      Navigator.pushReplacementNamed(context, '/home');
+    }
 
     return Scaffold(
         backgroundColor: backgroundColor,
-        body: Stack(
-          children: [
-            AnnotatedRegion<SystemUiOverlayStyle>(
-              value: SystemUiOverlayStyle.light,
-              child: Scrollbar(
+        body: AnnotatedRegion<SystemUiOverlayStyle>(
+          value: SystemUiOverlayStyle.light,
+          child: Stack(
+            children: [
+              Scrollbar(
                 isAlwaysShown: (deviceType == DeviceType.MOBILE) ? false : true,
-                child: Column(children: [
-                  renderByOrderStatus(),
-                  Container(height: 10, color: lineColor),
-                  Container(
-                    color: Colors.white,
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      children: [
-                        Text(
-                            AppLocalizations.of(context)!
-                                .translate('order_details')!,
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                                color: textDarkColor)),
-                        SizedBox(height: 10),
-                        buildDetailRow(
-                            AppLocalizations.of(context)!
-                                .translate('your_order_number')!,
-                            widget.order.id.toString()),
-                        SizedBox(height: 5),
-                        buildDetailRow(
-                            AppLocalizations.of(context)!
-                                .translate('delivery_address')!,
-                            widget.order.deliveryAddress),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          child: DottedLine(dashWidth: 5, color: lineColor),
-                        ),
-                        ListView.separated(
-                            shrinkWrap: true,
-                            physics: BouncingScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return OrderItemRow(
-                                  orderItem: widget.order.orderItems[index]);
-                            },
-                            separatorBuilder: (context, index) {
-                              return SizedBox(height: 2);
-                            },
-                            itemCount: widget.order.orderItems.length),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          child: DottedLine(dashWidth: 5, color: lineColor),
-                        ),
-                        buildDetailRow(
-                            AppLocalizations.of(context)!
-                                .translate('sub_total')!,
-                            "${widget.order.itemCost} ${CURRENCY} "),
-                        SizedBox(height: 5),
-                        buildDetailRow(
-                            AppLocalizations.of(context)!
-                                .translate('delivery_cost')!,
-                            widget.order.delyveryCost != 0
-                                ? widget.order.delyveryCost.toString()
-                                : AppLocalizations.of(context)!
-                                    .translate('free')!),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          child: DottedLine(dashWidth: 5, color: lineColor),
-                        ),
-                        buildDetailRow(
-                            AppLocalizations.of(context)!
-                                .translate('payment_method')!,
-                            AppLocalizations.of(context)!
-                                .translate('cash_on_delivery')!),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          child: DottedLine(dashWidth: 5, color: lineColor),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: Column(
+                    children: [
+                      PrepareOrder(
+                        status: status,
+                      ),
+                      Container(height: 10, color: lineColor),
+                      Container(
+                        color: Colors.white,
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Text(
                                 AppLocalizations.of(context)!
-                                    .translate('total_inclusive_tax')!,
+                                    .translate('order_details')!,
                                 style: TextStyle(
-                                    fontSize: 14,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.w600,
                                     color: textDarkColor)),
-                            SizedBox(width: 10),
-                            Expanded(
-                              child: Text("${widget.order.total} ${CURRENCY}",
-                                  textAlign: TextAlign.end,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: textDarkColor)),
-                            )
+                            SizedBox(height: 10),
+                            buildDetailRow(
+                                AppLocalizations.of(context)!
+                                    .translate('your_order_number')!,
+                                "#208"),
+                            SizedBox(height: 5),
+                            buildDetailRow(
+                                AppLocalizations.of(context)!
+                                    .translate('delivery_address')!,
+                                "Vancouver, BC V6C 2T4"),
+                            SizedBox(height: 5),
+                            buildDetailRow(
+                                AppLocalizations.of(context)!
+                                    .translate('phone')!,
+                                "Vancouver, BC V6C 2T4"),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 15),
+                              child: DottedLine(dashWidth: 5, color: lineColor),
+                            ),
+                            buildDetailRow(
+                                '2x Meat Ball Pasta', "${CURRENCY}35"),
+                            SizedBox(height: 5),
+                            buildDetailRow('1x Steak', "${CURRENCY}20"),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 15),
+                              child: DottedLine(dashWidth: 5, color: lineColor),
+                            ),
+                            buildDetailRow(
+                                AppLocalizations.of(context)!
+                                    .translate('sub_total')!,
+                                "${CURRENCY}90"),
+                            SizedBox(height: 5),
+                            buildDetailRow("$TAX_LABEL ($TAX_PERCENTAGE%)",
+                                "${CURRENCY}17"),
+                            SizedBox(height: 5),
+                            buildDetailRow(
+                                AppLocalizations.of(context)!
+                                    .translate('delivery_cost')!,
+                                AppLocalizations.of(context)!
+                                    .translate('free')!),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 15),
+                              child: DottedLine(dashWidth: 5, color: lineColor),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                    AppLocalizations.of(context)!
+                                        .translate('total_inclusive_tax')!,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                        color: textDarkColor)),
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: Text("${CURRENCY}107",
+                                      textAlign: TextAlign.end,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: textDarkColor)),
+                                )
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 15),
+                              child: DottedLine(dashWidth: 5, color: lineColor),
+                            ),
+                            buildDetailRow(
+                                AppLocalizations.of(context)!
+                                    .translate('payment_method')!,
+                                AppLocalizations.of(context)!
+                                    .translate('cash_on_delivery')!),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 15),
+                              child: DottedLine(dashWidth: 5, color: lineColor),
+                            ),
+                            SizedBox(height: 20)
                           ],
                         ),
-                        SizedBox(height: 20)
-                      ],
-                    ),
-                  )
-                ]),
+                      )
+                    ],
+                  ),
+                ),
               ),
-            ),
-            Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 24)
-                      ],
-                      color: Colors.white,
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextButton(
-                            style: ButtonStyle(
-                                padding: MaterialStateProperty.all(
-                                    EdgeInsets.symmetric(
-                                        vertical: (deviceType == DeviceType.WEB)
-                                            ? 20
-                                            : 15)),
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                  side: BorderSide(
-                                      color: primaryColor,
-                                      width: 1.5,
-                                      style: BorderStyle.solid),
-                                  borderRadius:
-                                      BorderRadius.circular(BORDER_RADIUS),
-                                )),
-                                backgroundColor:
-                                    MaterialStateProperty.all(Colors.white),
-                                textStyle: MaterialStateProperty.all(
-                                    TextStyle(color: primaryColor))),
-                            child: Text(
-                                AppLocalizations.of(context)!
-                                    .translate('btn_cancel')!,
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w700,
-                                    letterSpacing: 1)),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 35,
+                        height: 35,
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 10)
+                          ],
+                          borderRadius: BorderRadius.circular(12),
                         ),
-                        SizedBox(width: 20),
-                        Expanded(
-                          child: ElevatedButton(
+                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                        child: ElevatedButton(
                             style: ButtonStyle(
-                                padding: MaterialStateProperty.all(
-                                    EdgeInsets.symmetric(
-                                        vertical: (deviceType == DeviceType.WEB)
-                                            ? 20
-                                            : 15)),
-                                shape: MaterialStateProperty.all(
-                                    RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(BORDER_RADIUS),
-                                )),
-                                elevation: MaterialStateProperty.all(12),
-                                backgroundColor:
-                                    MaterialStateProperty.all(primaryColor),
-                                textStyle: MaterialStateProperty.all(
-                                    TextStyle(color: Colors.white))),
-                            child: Text(
-                                AppLocalizations.of(context)!
-                                    .translate('btn_return_home')!,
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.white),
+                              padding:
+                                  MaterialStateProperty.all(EdgeInsets.zero),
+                              elevation: MaterialStateProperty.all(0),
+                              shape: MaterialStateProperty.all(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              )),
+                            ),
+                            child: Icon(Icons.navigate_before,
+                                color: Colors.black),
+                            onPressed: () => onBack()),
+                      ),
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('208',
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
-                                    fontSize: 15,
+                                    fontSize: 25,
                                     fontWeight: FontWeight.w600,
-                                    letterSpacing: 1)),
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pushReplacementNamed('/home');
-                            },
-                          ),
+                                    letterSpacing: 1,
+                                    color: Colors.white)),
+                            Text(
+                                AppLocalizations.of(context)!
+                                    .translate('order_no')!,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 14, color: Colors.white))
+                          ],
                         ),
-                      ],
-                    )))
-          ],
+                      ),
+                      SizedBox(width: 35),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ));
-  }
-
-  Widget renderByOrderStatus() {
-    if (widget.order.status == OrderStatus.FINDING) {
-      return FindingShipper();
-    }
-    if (widget.order.status == OrderStatus.PREPARING) {
-      return PrepareOrder();
-    }
-    if (widget.order.status == OrderStatus.DELIVERD) {
-      // return OrderMap();
-    }
-    return Container();
   }
 
   buildDetailRow(String title, String value) {

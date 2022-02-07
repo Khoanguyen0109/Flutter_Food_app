@@ -93,9 +93,10 @@ class _HomeState extends State<Home> {
           children: [
             HomeTab(),
             // OfferTab(),
-            OrderTab(),
-            SizedBox(),
             OfferTab(),
+
+            SizedBox(),
+            OrderTab(),
 
             // FavoriteTab(),
             ProfileTab()
@@ -109,7 +110,7 @@ class _HomeState extends State<Home> {
             children: [
               Positioned.fill(
                 child: FloatingActionButton(
-                  heroTag: "cart_btn",
+                  heroTag: "cart_btn1",
                   onPressed: () {
                     if (totalItem > 0) {
                       Navigator.pushNamed(context, "/cart");

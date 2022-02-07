@@ -55,27 +55,26 @@ class _HomeTabState extends State<HomeTab> {
 
   Future<dynamic> _fetchStoreList() async {
     final data = await StoreServices.fetchStoreList(null, null);
-    setState(() {
-      _storeArray = data;
-    });
+    // setState(() {
+    //   _storeArray = data;
+    // });
     return data;
   }
 
-  Future<dynamic> _fetchPopularStore() async {
-    final data = await StoreServices.fetchPopularStoreList();
-    setState(() {
-      _poppularStore = data;
-    });
-    return data;
-  }
+  // Future<dynamic> _fetchPopularStore() async {
+  //   final data = await StoreServices.fetchPopularStoreList();
+  //   setState(() {
+  //     _poppularStore = data;
+  //   });
+  //   return data;
+  // }
 
   _initData() async {
     setState(() {
       loading = true;
     });
-    Future.wait([_fetchStoreList(), _fetchPopularStore()])
-        .then((List responses) {
-      print(responses);
+    Future.wait([_fetchStoreList()]).then((List responses) {
+      // print(responses);
       setState(() {
         loading = false;
       });
@@ -91,7 +90,7 @@ class _HomeTabState extends State<HomeTab> {
   void initState() {
     searchController.addListener(_onSearchChange);
     super.initState();
-    // _initData();
+    _initData();
     _subChoiceList = [
       SubChoiceModel(1, 'Meat Ball Pasta', 5.00),
       SubChoiceModel(2, 'Meat', 9.00),
@@ -130,7 +129,7 @@ class _HomeTabState extends State<HomeTab> {
     ];
     _poppularStore = [
       StoreModel(
-          id: 1,
+          id: '1',
           name: "Papaxot",
           image: 'assets/images/temp_item4.png',
           description: "156 Nguyen thi thap  ",
@@ -138,7 +137,7 @@ class _HomeTabState extends State<HomeTab> {
           category: 0,
           review: 5.0),
       StoreModel(
-          id: 2,
+          id: '2',
           name: "Papaxot",
           image: 'assets/images/temp_item4.png',
           description: "156 Nguyen thi thap  ",
@@ -146,7 +145,7 @@ class _HomeTabState extends State<HomeTab> {
           category: 0,
           review: 5.0),
       StoreModel(
-          id: 3,
+          id: '3',
           name: "Papaxot",
           image: 'assets/images/temp_item4.png',
           description: "156 Nguyen thi thap  ",
@@ -157,7 +156,7 @@ class _HomeTabState extends State<HomeTab> {
 
     _storeArray = [
       StoreModel(
-          id: 1,
+          id: '1',
           name: "Papaxot",
           image: 'assets/images/temp_item4.png',
           description: "156 Nguyen thi thap  ",
@@ -165,7 +164,7 @@ class _HomeTabState extends State<HomeTab> {
           category: 0,
           review: 5.0),
       StoreModel(
-          id: 2,
+          id: '2',
           name: "Papaxot",
           image: 'assets/images/temp_item4.png',
           description: "156 Nguyen thi thap  ",
@@ -173,7 +172,7 @@ class _HomeTabState extends State<HomeTab> {
           category: 0,
           review: 5.0),
       StoreModel(
-          id: 3,
+          id: '3',
           name: "Papaxot",
           image: 'assets/images/temp_item4.png',
           description: "156 Nguyen thi thap  ",
@@ -333,14 +332,24 @@ class _HomeTabState extends State<HomeTab> {
               deviceType == DeviceType.MOBILE) ...[
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                  AppLocalizations.of(context)!
-                      .translate("lets_eat_quality_food")!,
-                  style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 0.5,
-                      color: textDarkColor)),
+              child: Row(
+                children: [
+                  Text(
+                      AppLocalizations.of(context)!
+                          .translate("lets_eat_quality_food")!,
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.5,
+                          color: textDarkColor)),
+                  Expanded(child: SizedBox.shrink()),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, "/notifications");
+                      },
+                      child: Icon(Icons.notifications))
+                ],
+              ),
             ),
             SizedBox(height: 20),
             Padding(

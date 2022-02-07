@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 class User {
-  final String id;
+  final dynamic id;
   final String name;
   final String? phone;
-  final String? email;
+  final String email;
   final String? role;
   // final String? phone;
   User({
@@ -27,10 +27,10 @@ class User {
 
   factory User.fromMap(Map<String, dynamic> map) {
     return User(
-      id: map['id'] ?? '',
+      id: map['id'],
       name: map['name'] ?? '',
-      phone: map['phone'],
-      email: map['email'],
+      phone: map['phone'] ?? '',
+      email: map['email'] ?? '',
       role: map['role'],
     );
   }

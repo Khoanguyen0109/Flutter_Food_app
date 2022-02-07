@@ -32,7 +32,9 @@ class _OrderTracking1State extends State<OrderTracking1> {
                   physics: BouncingScrollPhysics(),
                   child: Column(
                     children: [
-                      PrepareOrder(),
+                      PrepareOrder(
+                        status: 1,
+                      ),
                       Container(height: 10, color: lineColor),
                       Container(
                         color: Colors.white,

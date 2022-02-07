@@ -8,10 +8,13 @@ import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
 import 'package:food_app/configs/my_class.dart';
-import 'package:food_app/providers/auth_service.dart';
+import 'package:food_app/providers/auth_provider.dart';
+import 'package:food_app/services/auth_services.dart';
+// import 'package:food_app/providers/auth_service.dart';
 import 'package:food_app/utils/toast_utls.dart';
 import 'package:food_app/widgets/resolution_not_supported.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -32,14 +35,24 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
-    final authService = Provider.of<AuthService>(context);
+    // final authService = Provider.of<AuthService>(context);
+    final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
     void onSubmit() async {
+      // _prefs.then((SharedPreferences prefs) {
+      //   print(prefs.getString('device_token') ?? 0);
+      // });
       if (_formkey.currentState!.validate()) {
         try {
-          model.User? user = await authService.signInwithEmailAndPassword(
+          String? accessToken = await AuthServices.login(
               emailController.text, passwordController.text);
-          if (user != null) {
+          if (accessToken != null) {
+            final SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+            ;
+            prefs.setString('access_token', accessToken);
             ToastUtils.toastSucessfull("Login Sucessfull");
+
             Navigator.of(context).pushReplacementNamed('/home');
           }
         } on FirebaseAuthException catch (error) {
@@ -55,53 +68,53 @@ class _LoginState extends State<Login> {
           brightness: Brightness.light,
           elevation: 0,
           iconTheme: IconThemeData(color: primaryColor),
-          leading: Center(
-            child: Container(
-              width: 35,
-              height: 35,
-              margin: const EdgeInsetsDirectional.only(start: 20),
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      color: Colors.black.withOpacity(0.1), blurRadius: 10)
-                ],
-                borderRadius: BorderRadius.circular(12),
-              ),
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.white),
-                    padding: MaterialStateProperty.all(EdgeInsets.zero),
-                    elevation: MaterialStateProperty.all(0),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    )),
-                  ),
-                  child: Icon(Icons.navigate_before, color: Colors.black),
-                  onPressed: () => Navigator.pop(context)),
-            ),
-          ),
-          actions: [
-            TextButton(
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all(Colors.transparent),
-                  padding: MaterialStateProperty.all(
-                      EdgeInsets.symmetric(horizontal: 30))),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(AppLocalizations.of(context)!.translate('btn_skip')!,
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: primaryColor)),
-                  Icon(Icons.navigate_next, color: primaryColor, size: 24)
-                ],
-              ),
-              onPressed: () => Navigator.pushNamed(context, "/home"),
-            )
-          ],
+          // leading: Center(
+          //   child: Container(
+          //     width: 35,
+          //     height: 35,
+          //     margin: const EdgeInsetsDirectional.only(start: 20),
+          //     decoration: BoxDecoration(
+          //       boxShadow: [
+          //         BoxShadow(
+          //             color: Colors.black.withOpacity(0.1), blurRadius: 10)
+          //       ],
+          //       borderRadius: BorderRadius.circular(12),
+          //     ),
+          //     clipBehavior: Clip.antiAliasWithSaveLayer,
+          //     child: ElevatedButton(
+          //         style: ButtonStyle(
+          //           backgroundColor: MaterialStateProperty.all(Colors.white),
+          //           padding: MaterialStateProperty.all(EdgeInsets.zero),
+          //           elevation: MaterialStateProperty.all(0),
+          //           shape: MaterialStateProperty.all(RoundedRectangleBorder(
+          //             borderRadius: BorderRadius.circular(12),
+          //           )),
+          //         ),
+          //         child: Icon(Icons.navigate_before, color: Colors.black),
+          //         onPressed: () => Navigator.pop(context)),
+          //   ),
+          // ),
+          // actions: [
+          //   TextButton(
+          //     style: ButtonStyle(
+          //         backgroundColor:
+          //             MaterialStateProperty.all(Colors.transparent),
+          //         padding: MaterialStateProperty.all(
+          //             EdgeInsets.symmetric(horizontal: 30))),
+          //     child: Row(
+          //       mainAxisSize: MainAxisSize.min,
+          //       children: [
+          //         Text(AppLocalizations.of(context)!.translate('btn_skip')!,
+          //             style: TextStyle(
+          //                 fontSize: 16,
+          //                 fontWeight: FontWeight.w600,
+          //                 color: primaryColor)),
+          //         Icon(Icons.navigate_next, color: primaryColor, size: 24)
+          //       ],
+          //     ),
+          //     onPressed: () => Navigator.pushNamed(context, "/home"),
+          //   )
+          // ],
         ),
         body: _buildBody(deviceType, onSubmit));
   }

@@ -6,10 +6,13 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:food_app/models/order_model.dart';
 import 'package:food_app/pages/auth/auth_wrapper.dart';
+import 'package:food_app/pages/auth/auth_wrapper_jwt.dart';
 import 'package:food_app/pages/cart/cart.dart';
 import 'package:food_app/pages/location/location.dart';
 import 'package:food_app/pages/notifications/notification_init.dart';
 import 'package:food_app/pages/order/order.dart';
+import 'package:food_app/pages/order/order_list.dart';
+import 'package:food_app/pages/order/order_list_view.dart';
 import 'package:food_app/pages/settings/changelanguage.dart';
 import 'package:food_app/pages/auth/changepassword.dart';
 import 'package:food_app/pages/auth/forgot.dart';
@@ -29,18 +32,16 @@ import 'package:food_app/pages/settings/select_theme.dart';
 import 'package:food_app/pages/auth/signup.dart';
 import 'package:food_app/pages/cart/view_items.dart';
 import 'package:food_app/pages/loading/walk_through.dart';
+import 'package:food_app/providers/auth_provider.dart';
 import 'package:food_app/providers/auth_service.dart';
 import 'package:food_app/providers/cart_provider.dart';
+import 'package:food_app/providers/notification_provider.dart';
 import 'package:provider/provider.dart';
 import 'models/store_model.dart';
 import 'providers/app_localizations.dart';
 import 'configs/colors.dart';
 import 'configs/configs.dart';
 import 'models/models.dart';
-
-Future<void> _messageHandler(RemoteMessage message) async {
-  print('background message ${message.notification!.body}');
-}
 
 void main() async {
   await dotenv.load(fileName: ".env", mergeWith: {
@@ -50,10 +51,7 @@ void main() async {
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(_messageHandler);
-  FirebaseMessaging.onMessageOpenedApp.listen((message) {
-    print('Message clicked!');
-  });
+
   runApp(MainApp());
 }
 
@@ -64,18 +62,21 @@ class MainApp extends StatefulWidget {
 
 class _MainAppState extends State<MainApp> {
   AppLanguage _appLanguage = AppLanguage();
-  AuthService _authService = AuthService();
+  // AuthService _authService = AuthService();
   CartProvider _cartProvider = CartProvider();
-
+  AuthProvider _authProvider = AuthProvider();
+  NotificationProvider _notificationProvider = NotificationProvider();
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider<AppLanguage>(
               create: (context) => _appLanguage),
-          ChangeNotifierProvider<AuthService>(
-              create: (context) => _authService),
-          ChangeNotifierProvider(create: (context) => _cartProvider)
+          // ChangeNotifierProvider<AuthService>(
+          //     create: (context) => _authService),
+          ChangeNotifierProvider(create: (context) => _authProvider),
+          ChangeNotifierProvider(create: (context) => _cartProvider),
+          ChangeNotifierProvider(create: (context) => _notificationProvider)
         ],
         child: Consumer<AppLanguage>(builder: (context, model, child) {
           return NotificationInit(
@@ -105,7 +106,7 @@ class _MainAppState extends State<MainApp> {
                   '/': (context) => WalkThrough(),
                   '/select_theme': (context) => SelectTheme(),
                   '/select_language': (context) => SelectLanguage(),
-                  '/home': (context) => AuthWrapper(),
+                  '/home': (context) => AuthWrapperJwt(),
                   '/location': (context) => Location(),
                   '/store': (context) =>
                       StoreView(settings.arguments as StoreModel),
@@ -119,6 +120,7 @@ class _MainAppState extends State<MainApp> {
                   '/cart': (context) => Cart(),
                   '/order': (conext) =>
                       Order(order: settings.arguments as OrderModel),
+                  '/orderList': (conext) => OrderListView(),
                   '/select_address': (context) => SelectAddress(),
                   '/payment_method': (context) => PaymentMethod(),
                   '/my_address': (context) => MyAddress(),

@@ -1,13 +1,45 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/models/user_model.dart';
 import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
 import 'package:food_app/configs/my_class.dart';
+import 'package:food_app/providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
-class MyAccount extends StatelessWidget {
+class MyAccount extends StatefulWidget {
+  @override
+  State<MyAccount> createState() => _MyAccountState();
+}
+
+class _MyAccountState extends State<MyAccount> {
+  late TextEditingController _nameController;
+  late TextEditingController _emailController;
+  late TextEditingController _phoneController;
+
+  @override
+  void initState() {
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    User user = authProvider.getUser;
+    _nameController = TextEditingController(text: user.name);
+    _emailController = TextEditingController(text: user.email);
+    _phoneController = TextEditingController(text: user.phone);
+    super.initState();
+
+    // TODO: implement initState
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
+    final authProvider = Provider.of<AuthProvider>(context);
+    User user = authProvider.getUser;
 
     return Scaffold(
         backgroundColor: backgroundColor,
@@ -62,11 +94,11 @@ class MyAccount extends StatelessWidget {
                     children: [
                       Expanded(
                         child: TextFormField(
-                            controller: TextEditingController(text: "Sohail"),
+                            controller: _nameController,
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.all(0),
                               labelText: AppLocalizations.of(context)!
-                                  .translate('first_name'),
+                                  .translate('your_name'),
                               labelStyle: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   letterSpacing: 0.5,
@@ -78,31 +110,30 @@ class MyAccount extends StatelessWidget {
                                 color: textDarkColor),
                             textCapitalization: TextCapitalization.words),
                       ),
-                      SizedBox(width: 20),
-                      Expanded(
-                        child: TextFormField(
-                            controller: TextEditingController(text: "Asghar"),
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.all(0),
-                              labelText: AppLocalizations.of(context)!
-                                  .translate('last_name'),
-                              labelStyle: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  letterSpacing: 0.5,
-                                  color: textLightColor),
-                            ),
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: textDarkColor),
-                            textCapitalization: TextCapitalization.words),
-                      ),
+                      // SizedBox(width: 20),
+                      // Expanded(
+                      //   child: TextFormField(
+                      //       controller: TextEditingController(text: "Asghar"),
+                      //       decoration: InputDecoration(
+                      //         contentPadding: const EdgeInsets.all(0),
+                      //         labelText: AppLocalizations.of(context)!
+                      //             .translate('last_name'),
+                      //         labelStyle: TextStyle(
+                      //             fontWeight: FontWeight.w400,
+                      //             letterSpacing: 0.5,
+                      //             color: textLightColor),
+                      //       ),
+                      //       style: TextStyle(
+                      //           fontSize: 16,
+                      //           fontWeight: FontWeight.w600,
+                      //           color: textDarkColor),
+                      //       textCapitalization: TextCapitalization.words),
+                      // ),
                     ],
                   ),
                   SizedBox(height: 20),
                   TextFormField(
-                      controller: TextEditingController(
-                          text: "ahmed.sohail.asghar@gmail.com"),
+                      controller: _emailController,
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.all(0),
                         labelText: AppLocalizations.of(context)!
@@ -119,8 +150,7 @@ class MyAccount extends StatelessWidget {
                       textCapitalization: TextCapitalization.words),
                   SizedBox(height: 20),
                   TextFormField(
-                      controller:
-                          TextEditingController(text: "+92-313-1234567"),
+                      controller: _phoneController,
                       decoration: InputDecoration(
                         contentPadding: const EdgeInsets.all(0),
                         labelText:
@@ -135,23 +165,23 @@ class MyAccount extends StatelessWidget {
                           fontWeight: FontWeight.w600,
                           color: textDarkColor),
                       textCapitalization: TextCapitalization.words),
-                  SizedBox(height: 20),
-                  TextFormField(
-                      controller: TextEditingController(text: "23-03-1993"),
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(0),
-                        labelText: AppLocalizations.of(context)!
-                            .translate('date_of_birth'),
-                        labelStyle: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 0.5,
-                            color: textLightColor),
-                      ),
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          color: textDarkColor),
-                      textCapitalization: TextCapitalization.words),
+                  // SizedBox(height: 20),
+                  // TextFormField(
+                  //     controller: TextEditingController(text: "23-03-1993"),
+                  //     decoration: InputDecoration(
+                  //       contentPadding: const EdgeInsets.all(0),
+                  //       labelText: AppLocalizations.of(context)!
+                  //           .translate('date_of_birth'),
+                  //       labelStyle: TextStyle(
+                  //           fontWeight: FontWeight.w400,
+                  //           letterSpacing: 0.5,
+                  //           color: textLightColor),
+                  //     ),
+                  //     style: TextStyle(
+                  //         fontSize: 16,
+                  //         fontWeight: FontWeight.w600,
+                  //         color: textDarkColor),
+                  //     textCapitalization: TextCapitalization.words),
                   SizedBox(height: 50),
                   ElevatedButton(
                     style: ButtonStyle(

@@ -8,6 +8,8 @@ import 'package:food_app/configs/my_class.dart';
 import 'package:food_app/pages/cart/select_address.dart';
 import 'package:food_app/pages/cart/select_payment_method.dart';
 import 'package:food_app/providers/cart_provider.dart';
+import 'package:food_app/services/order_services.dart';
+import 'package:food_app/utils/toast_utls.dart';
 import 'package:food_app/widgets/counter_button.dart';
 import 'package:food_app/widgets/delivery_note_dialog.dart';
 import 'package:food_app/widgets/dotted_line.dart';
@@ -22,7 +24,7 @@ class Cart extends StatefulWidget {
 class _CartState extends State<Cart> {
   final _locationInputController = TextEditingController();
   String location = '';
-  int paymentMethod = -1;
+  int paymentMethod = 1;
 
   @override
   void initState() {
@@ -52,7 +54,21 @@ class _CartState extends State<Cart> {
   Widget build(BuildContext context) {
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
     List<OrderItem> cartList = Provider.of<CartProvider>(context).items;
+    int? storeId = Provider.of<CartProvider>(context).storeId;
+
     double grandTotal = Provider.of<CartProvider>(context).totalPay;
+    submitOrder() async {
+      final order = await OrderServices.createOrder(storeId, cartList);
+      if (order != null) {
+        Navigator.pushNamed(context, "/order");
+
+        ToastUtils.toastSucessfull("Order Successfull");
+      } else {
+        Navigator.pushNamed(context, "/order");
+
+        ToastUtils.toastFailed("Submit order Failed");
+      }
+    }
 
     void updateCartItem(ItemModel item, int quantity) {
       Provider.of<CartProvider>(context, listen: false)
@@ -174,7 +190,7 @@ class _CartState extends State<Cart> {
                   },
                 ),
               ),
-              checkoutItem(deviceType, grandTotal)
+              checkoutItem(deviceType, grandTotal, submitOrder)
 
               // Expanded(
               //   flex: 1,
@@ -300,7 +316,7 @@ class _CartState extends State<Cart> {
     );
   }
 
-  Widget checkoutItem(DeviceType deviceType, double grandTotal) {
+  Widget checkoutItem(DeviceType deviceType, double grandTotal, submitOrder) {
     return Center(
       child: Container(
         width: (deviceType == DeviceType.WEB || deviceType == DeviceType.TABLET)
@@ -534,7 +550,7 @@ class _CartState extends State<Cart> {
                       fontWeight: FontWeight.w600,
                       letterSpacing: 1)),
               onPressed: () {
-                Navigator.pushNamed(context, "/order");
+                submitOrder();
               },
             ),
           ],

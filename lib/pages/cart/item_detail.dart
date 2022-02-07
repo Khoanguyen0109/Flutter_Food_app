@@ -313,7 +313,7 @@ class _ItemDetailState extends State<ItemDetail> {
                 height: 60,
                 margin: EdgeInsets.all(10),
                 child: FloatingActionButton(
-                  heroTag: "add_btn",
+                  heroTag: 'add_btn${widget.itemModel.id}',
                   backgroundColor: primaryColor,
                   child: Icon(Icons.add, size: 30, color: Colors.white),
                   elevation: 12,

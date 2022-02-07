@@ -22,7 +22,7 @@ class _OrderListState extends State<OrderList> {
     OrderModel(
         id: 1,
         storeModel: StoreModel(
-            id: 1,
+            id: '1',
             name: "Papaxot",
             image: 'assets/images/temp_item4.png',
             description: "156 Nguyen thi thap  ",
