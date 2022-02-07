@@ -3,7 +3,12 @@ import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
 import 'package:food_app/models/models.dart';
 import 'package:food_app/models/order_model.dart';
+import 'package:food_app/models/user_model.dart';
+import 'package:food_app/providers/auth_provider.dart';
+import 'package:food_app/utils/constants.dart';
+import 'package:food_app/utils/utils.dart';
 import 'package:food_app/widgets/order_status.dart';
+import 'package:provider/provider.dart';
 
 class OrderRow extends StatelessWidget {
   const OrderRow({
@@ -14,6 +19,8 @@ class OrderRow extends StatelessWidget {
   final OrderModel orderModel;
   @override
   Widget build(BuildContext context) {
+    User user = Provider.of<AuthProvider>(context).getUser;
+    String role = 'shipper';
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, '/order', arguments: orderModel);
@@ -37,7 +44,18 @@ class OrderRow extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    OrderStatusView(status: orderModel.status),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        OrderStatusView(status: orderModel.status),
+                        Text(Utils.formatDateTime(DateTime.now()),
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                                letterSpacing: 0.5,
+                                color: textDarkColor))
+                      ],
+                    ),
                     Text(orderModel.storeModel.name,
                         style: TextStyle(
                             fontSize: 16,
@@ -52,6 +70,7 @@ class OrderRow extends StatelessWidget {
                     SizedBox(height: 5),
                     SizedBox(height: 10),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -76,8 +95,61 @@ class OrderRow extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Expanded(
-                          child: SizedBox(),
+                        Row(
+                          children: [
+                            Visibility(
+                              visible: role == 'shipper' &&
+                                  orderModel.status == OrderStatus.PREPARING,
+                              child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      padding: MaterialStateProperty.all(
+                                          EdgeInsets.all(10)),
+                                      shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            BORDER_RADIUS),
+                                      )),
+                                      elevation: MaterialStateProperty.all(12),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              primaryColor),
+                                      textStyle: MaterialStateProperty.all(
+                                          TextStyle(color: Colors.white))),
+                                  child: Text('Take Order',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          letterSpacing: 1,
+                                          color: Colors.white)),
+                                  onPressed: () {}),
+                            ),
+                            Visibility(
+                              visible: role == 'shipper' &&
+                                  orderModel.status == OrderStatus.DELIVERING,
+                              child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      padding: MaterialStateProperty.all(
+                                          EdgeInsets.all(10)),
+                                      shape: MaterialStateProperty.all(
+                                          RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            BORDER_RADIUS),
+                                      )),
+                                      elevation: MaterialStateProperty.all(12),
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                              primaryColor),
+                                      textStyle: MaterialStateProperty.all(
+                                          TextStyle(color: Colors.white))),
+                                  child: Text('Deliverd',
+                                      style: TextStyle(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w600,
+                                          letterSpacing: 1,
+                                          color: Colors.white)),
+                                  onPressed: () {}),
+                            ),
+                          ],
                         ),
                       ],
                     ),

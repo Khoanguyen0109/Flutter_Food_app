@@ -41,24 +41,24 @@ class CategoryModel {
 }
 
 class ItemModel {
-  int id;
-  int storeId;
+  dynamic id;
+  dynamic storeId;
   String name;
   String description;
   String image;
-  double reviews;
+  double? reviews;
   double price;
   int status;
   List<ChoiceModel>? choicesList;
   ItemModel({
     required this.id,
+    required this.storeId,
     required this.name,
     required this.description,
     required this.image,
-    required this.reviews,
+    this.reviews,
     required this.price,
     required this.status,
-    required this.storeId,
     this.choicesList,
   });
 
@@ -72,18 +72,18 @@ class ItemModel {
       'reviews': reviews,
       'price': price,
       'status': status,
-      'choicesList': choicesList?.map((x) => x.toMap()).toList(),
+      'choicesList': choicesList?.map((x) => x?.toMap())?.toList(),
     };
   }
 
   factory ItemModel.fromMap(Map<String, dynamic> map) {
     return ItemModel(
-      id: map['id']?.toInt() ?? 0,
-      storeId: map['storeId']?.toInt() ?? 0,
+      id: map['id'] ?? null,
+      storeId: map['storeId'] ?? null,
       name: map['name'] ?? '',
       description: map['description'] ?? '',
       image: map['image'] ?? '',
-      reviews: map['reviews']?.toDouble() ?? 0.0,
+      reviews: map['reviews']?.toDouble(),
       price: map['price']?.toDouble() ?? 0.0,
       status: map['status']?.toInt() ?? 0,
       choicesList: map['choicesList'] != null

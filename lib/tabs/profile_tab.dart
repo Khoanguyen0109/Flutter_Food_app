@@ -120,19 +120,19 @@ class _ProfileTabState extends State<ProfileTab> {
                                 elevation: 0,
                                 child: Column(
                                   children: [
-                                    profileItem(
-                                        Icons.history,
-                                        AppLocalizations.of(context)!.translate(
-                                            'order_tracking_screen1')!,
-                                        deviceType,
-                                        action: goToOrderTracking1),
-                                    separator(),
-                                    profileItem(
-                                        Icons.history,
-                                        AppLocalizations.of(context)!.translate(
-                                            'order_tracking_screen2')!,
-                                        deviceType,
-                                        action: goToOrderTracking2),
+                                    // profileItem(
+                                    //     Icons.history,
+                                    //     AppLocalizations.of(context)!.translate(
+                                    //         'order_tracking_screen1')!,
+                                    //     deviceType,
+                                    //     action: goToOrderTracking1),
+                                    // separator(),
+                                    // profileItem(
+                                    //     Icons.history,
+                                    //     AppLocalizations.of(context)!.translate(
+                                    //         'order_tracking_screen2')!,
+                                    //     deviceType,
+                                    //     action: goToOrderTracking2),
                                     profileItem(
                                         Icons.history, 'Order List', deviceType,
                                         action: goToOrderList),
@@ -176,9 +176,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                       MaterialStateProperty.all(primaryColor),
                                   textStyle: MaterialStateProperty.all(
                                       TextStyle(color: Colors.white))),
-                              child: Text(
-                                  AppLocalizations.of(context)!
-                                      .translate('btn_signout')!,
+                              child: Text('Sign Out',
                                   style: TextStyle(
 
                                       // backgroundColor: Colors.white,

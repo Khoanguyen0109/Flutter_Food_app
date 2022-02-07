@@ -13,7 +13,6 @@ class ApiService {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       String? accessToken = prefs.getString('access_token');
       String apiUrl = '$api' + '$url';
-      print(apiUrl);
       if (accessToken != null) {
         final response = await http.get(Uri.parse(apiUrl), headers: {
           HttpHeaders.authorizationHeader: 'Bearer $accessToken',

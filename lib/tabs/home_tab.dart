@@ -34,16 +34,11 @@ class _HomeTabState extends State<HomeTab> {
 
   List<CategoryModel>? _categoriesArray;
 
-  Future<List<StoreModel>> getStoreList() async {
-    List<StoreModel> storeList = [];
-    return storeList;
-  }
-
   _onSearchChange() async {
     if (_debouce?.isActive ?? false) _debouce?.cancel();
     _debouce = Timer(const Duration(microseconds: 500), () async {
       if (searchText != searchController.text) {
-        dynamic storeList = await getStoreList();
+        dynamic storeList = await _fetchStoreList(searchText);
         setState(() {
           _storeArray = storeList;
           searchText = searchController.text;
@@ -53,11 +48,12 @@ class _HomeTabState extends State<HomeTab> {
     });
   }
 
-  Future<dynamic> _fetchStoreList() async {
-    final data = await StoreServices.fetchStoreList(null, null);
-    // setState(() {
-    //   _storeArray = data;
-    // });
+  Future<dynamic> _fetchStoreList(String? searchValue) async {
+    final data = await StoreServices.fetchStoreList(searchValue, null);
+    // print(data[0].address);
+    setState(() {
+      _storeArray = data;
+    });
     return data;
   }
 
@@ -73,7 +69,7 @@ class _HomeTabState extends State<HomeTab> {
     setState(() {
       loading = true;
     });
-    Future.wait([_fetchStoreList()]).then((List responses) {
+    Future.wait([_fetchStoreList(null)]).then((List responses) {
       // print(responses);
       setState(() {
         loading = false;
@@ -106,79 +102,79 @@ class _HomeTabState extends State<HomeTab> {
     ];
 
     _trendsArray = [
-      ItemModel(
-          id: 1,
-          name: 'Meat Ball Pasta',
-          description: 'Spicy Meat Ball Pasta',
-          image: 'assets/images/temp_item1.png',
-          reviews: 25,
-          price: 3.5,
-          status: 1,
-          storeId: 1,
-          choicesList: _choiceList),
-      ItemModel(
-          id: 2,
-          name: 'Meat Ball Pasta',
-          description: 'Spicy Meat Ball Pasta',
-          image: 'assets/images/temp_item1.png',
-          reviews: 25,
-          price: 3.5,
-          status: 1,
-          storeId: 1,
-          choicesList: _choiceList),
+      // ItemModel(
+      //     id: 1,
+      //     name: 'Meat Ball Pasta',
+      //     description: 'Spicy Meat Ball Pasta',
+      //     image: 'assets/images/temp_item1.png',
+      //     reviews: 25,
+      //     price: 3.5,
+      //     status: 1,
+      //     storeId: 1,
+      //     choicesList: _choiceList),
+      // ItemModel(
+      //     id: 2,
+      //     name: 'Meat Ball Pasta',
+      //     description: 'Spicy Meat Ball Pasta',
+      //     image: 'assets/images/temp_item1.png',
+      //     reviews: 25,
+      //     price: 3.5,
+      //     status: 1,
+      //     storeId: 1,
+      //     choicesList: _choiceList),
     ];
     _poppularStore = [
-      StoreModel(
-          id: '1',
-          name: "Papaxot",
-          image: 'assets/images/temp_item4.png',
-          description: "156 Nguyen thi thap  ",
-          address: "156 Nguyen thi thap  ",
-          category: 0,
-          review: 5.0),
-      StoreModel(
-          id: '2',
-          name: "Papaxot",
-          image: 'assets/images/temp_item4.png',
-          description: "156 Nguyen thi thap  ",
-          address: "156 Nguyen thi thap 156 Nguyen thi thap  ",
-          category: 0,
-          review: 5.0),
-      StoreModel(
-          id: '3',
-          name: "Papaxot",
-          image: 'assets/images/temp_item4.png',
-          description: "156 Nguyen thi thap  ",
-          address: "156 Nguyen thi thap  ",
-          category: 0,
-          review: 5.0)
+      // StoreModel(
+      //     id: '1',
+      //     name: "Papaxot",
+      //     image: 'assets/images/temp_item4.png',
+      //     description: "156 Nguyen thi thap  ",
+      //     address: "156 Nguyen thi thap  ",
+      //     category: 0,
+      //     review: 5.0),
+      // StoreModel(
+      //     id: '2',
+      //     name: "Papaxot",
+      //     image: 'assets/images/temp_item4.png',
+      //     description: "156 Nguyen thi thap  ",
+      //     address: "156 Nguyen thi thap 156 Nguyen thi thap  ",
+      //     category: 0,
+      //     review: 5.0),
+      // StoreModel(
+      //     id: '3',
+      //     name: "Papaxot",
+      //     image: 'assets/images/temp_item4.png',
+      //     description: "156 Nguyen thi thap  ",
+      //     address: "156 Nguyen thi thap  ",
+      //     category: 0,
+      //     review: 5.0)
     ];
 
     _storeArray = [
-      StoreModel(
-          id: '1',
-          name: "Papaxot",
-          image: 'assets/images/temp_item4.png',
-          description: "156 Nguyen thi thap  ",
-          address: "156 Nguyen thi thap  ",
-          category: 0,
-          review: 5.0),
-      StoreModel(
-          id: '2',
-          name: "Papaxot",
-          image: 'assets/images/temp_item4.png',
-          description: "156 Nguyen thi thap  ",
-          address: "156 Nguyen thi thap 156 Nguyen thi thap  ",
-          category: 0,
-          review: 5.0),
-      StoreModel(
-          id: '3',
-          name: "Papaxot",
-          image: 'assets/images/temp_item4.png',
-          description: "156 Nguyen thi thap  ",
-          category: 0,
-          address: "156 Nguyen thi thap  ",
-          review: 5.0)
+      // StoreModel(
+      //     id: '1',
+      //     name: "Papaxot",
+      //     image: 'assets/images/temp_item4.png',
+      //     description: "156 Nguyen thi thap  ",
+      //     address: "156 Nguyen thi thap  ",
+      //     category: 0,
+      //     review: 5.0),
+      // StoreModel(
+      //     id: '2',
+      //     name: "Papaxot",
+      //     image: 'assets/images/temp_item4.png',
+      //     description: "156 Nguyen thi thap  ",
+      //     address: "156 Nguyen thi thap 156 Nguyen thi thap  ",
+      //     category: 0,
+      //     review: 5.0),
+      // StoreModel(
+      //     id: '3',
+      //     name: "Papaxot",
+      //     image: 'assets/images/temp_item4.png',
+      //     description: "156 Nguyen thi thap  ",
+      //     category: 0,
+      //     address: "156 Nguyen thi thap  ",
+      //     review: 5.0)
     ];
 
     _categoriesArray = [

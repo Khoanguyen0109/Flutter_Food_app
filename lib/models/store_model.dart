@@ -35,11 +35,11 @@ class StoreModel {
   factory StoreModel.fromMap(Map<String, dynamic> map) {
     return StoreModel(
       id: map['id'] ?? '',
-      name: map['name'] ?? '',
+      name: map['merchant_name'] ?? '',
       description: map['description'] ?? '',
       image: map['image'] ?? '',
       address: map['address'] ?? '',
-      category: map['category'] ?? -1,
+      category: map['category'] ?? '',
       review: map['review']?.toDouble() ?? 0.0,
       status: map['status']?.toInt(),
     );

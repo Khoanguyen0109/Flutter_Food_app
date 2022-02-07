@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/configs/colors.dart';
 import 'package:food_app/pages/order/order_list.dart';
 import 'package:food_app/utils/constants.dart';
 
@@ -37,7 +38,7 @@ class _ShipperHomeState extends State<ShipperHome> {
                       icon: Icon(Icons.notifications)),
                   IconButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, "/my_account");
+                        Navigator.pushNamed(context, "/shipper_account");
                       },
                       icon: Icon(Icons.person)),
                 ],

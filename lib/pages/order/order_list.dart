@@ -49,7 +49,7 @@ class _OrderListState extends State<OrderList> {
         itemCost: 122,
         total: 133,
         paymentMethod: 0,
-        status: OrderStatus.DELIVERD)
+        status: OrderStatus.DELIVERING)
   ];
 
   getOrderList() async {

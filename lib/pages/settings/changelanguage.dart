@@ -111,6 +111,7 @@ class _ChangeLanguageState extends State<ChangeLanguage> {
       child: InkWell(
         onTap: () async {
           await _appLanguage!.changeLanguage(Locale(countryCode));
+          Navigator.pop(context);
         },
         child: Padding(
           padding: const EdgeInsets.all(20),

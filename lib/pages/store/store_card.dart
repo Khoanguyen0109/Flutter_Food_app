@@ -32,7 +32,8 @@ class StoreCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Image.asset(storeModel.image, height: 130, fit: BoxFit.fitHeight),
+              Image.network(storeModel.image,
+                  height: 130, fit: BoxFit.fitHeight),
               SizedBox(height: 5),
               Text(
                 storeModel.name,

@@ -4,12 +4,23 @@ import 'package:food_app/utils/apiService.dart';
 
 class StoreServices {
   static Future<List<StoreModel>> fetchStoreList(
-      int? category, String? search) async {
-    String url = 'merchant';
-    print(url);
-    final data = await ApiService.get(url, null);
-    print(data);
-    return [StoreModel.fromMap(data)];
+    String? search,
+    int? category,
+  ) async {
+    try {
+      String url = 'auth/merchant';
+      final data = await ApiService.get(url, null);
+      List<StoreModel> dataList = [];
+      for (var u in data['data']) {
+        StoreModel storeModel = StoreModel.fromMap(u);
+        dataList.add(storeModel);
+      }
+      return dataList;
+    } catch (e) {
+      print(e.toString());
+      List<StoreModel> a = [];
+      return a;
+    }
   }
 
   static Future<List<StoreModel>> fetchPopularStoreList() async {

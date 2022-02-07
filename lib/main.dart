@@ -32,6 +32,7 @@ import 'package:food_app/pages/settings/select_theme.dart';
 import 'package:food_app/pages/auth/signup.dart';
 import 'package:food_app/pages/cart/view_items.dart';
 import 'package:food_app/pages/loading/walk_through.dart';
+import 'package:food_app/pages/user/shipper_account.dart';
 import 'package:food_app/providers/auth_provider.dart';
 import 'package:food_app/providers/auth_service.dart';
 import 'package:food_app/providers/cart_provider.dart';
@@ -125,6 +126,7 @@ class _MainAppState extends State<MainApp> {
                   '/payment_method': (context) => PaymentMethod(),
                   '/my_address': (context) => MyAddress(),
                   '/my_account': (context) => MyAccount(),
+                  '/shipper_account': (context) => ShipperProfile(),
                   '/change_language': (context) => ChangeLanguage(),
                   '/change_password': (context) => ChangePassword(),
                   '/notifications': (context) => Notifications(),

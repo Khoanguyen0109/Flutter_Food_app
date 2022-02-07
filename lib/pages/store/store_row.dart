@@ -38,7 +38,7 @@ class StoreRow extends StatelessWidget {
                     Padding(
                       padding:
                           const EdgeInsetsDirectional.only(start: 15, top: 15),
-                      child: Image.asset(storeModel.image,
+                      child: Image.network(storeModel.image,
                           width: 100, height: 100, fit: BoxFit.fitHeight),
                     ),
                   ]),
