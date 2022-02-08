@@ -23,12 +23,22 @@ class Cart extends StatefulWidget {
 
 class _CartState extends State<Cart> {
   final _locationInputController = TextEditingController();
+  bool _validate = false;
+
   String location = '';
   int paymentMethod = 1;
 
   @override
   void initState() {
     // TODO: implement initState
+    _locationInputController.addListener(() {
+      if (_locationInputController.text.isEmpty && _validate == true) {
+        setState(() {
+          // ignore: unnecessary_statements
+          _validate = false;
+        });
+      }
+    });
     super.initState();
   }
 
@@ -51,22 +61,37 @@ class _CartState extends State<Cart> {
   }
 
   @override
+  void dispose() {
+    _locationInputController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
     List<OrderItem> cartList = Provider.of<CartProvider>(context).items;
     int? storeId = Provider.of<CartProvider>(context).storeId;
-
+    print(_validate);
     double grandTotal = Provider.of<CartProvider>(context).totalPay;
     submitOrder() async {
-      final order = await OrderServices.createOrder(storeId, cartList);
-      if (order != null) {
-        Navigator.pushNamed(context, "/order");
+      if (_locationInputController.text.isEmpty) {
+        // print(_locationInputController.text);
 
-        ToastUtils.toastSucessfull("Order Successfull");
+        setState(() {
+          _validate = true;
+        });
       } else {
-        Navigator.pushNamed(context, "/order");
+        final order = await OrderServices.createOrder(
+            storeId, cartList, _locationInputController.text, paymentMethod);
+        if (order != null) {
+          Navigator.pushNamed(context, "/order");
 
-        ToastUtils.toastFailed("Submit order Failed");
+          ToastUtils.toastSucessfull("Order Successfull");
+        } else {
+          // Navigator.pushNamed(context, "/order");
+
+          ToastUtils.toastFailed("Submit order Failed");
+        }
       }
     }
 
@@ -150,6 +175,8 @@ class _CartState extends State<Cart> {
                           hintText: "Enter your shipping address",
                           border: InputBorder.none,
                           contentPadding: EdgeInsets.only(left: 8.0, top: 16.0),
+                          errorText:
+                              _validate ? 'Address Can\'t Be Empty' : null,
                         ),
                       )
                       // child: Row(
@@ -287,7 +314,9 @@ class _CartState extends State<Cart> {
                               fontWeight: FontWeight.w600,
                               letterSpacing: 0.5,
                               color: primaryColor)),
-                      Text(orderItem.totalPrice.toStringAsFixed(2),
+                      Text(
+                          (orderItem.item.price * orderItem.quantity)
+                              .toStringAsFixed(2),
                           style: TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.w600,

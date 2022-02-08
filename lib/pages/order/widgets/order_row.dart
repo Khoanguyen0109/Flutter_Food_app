@@ -20,7 +20,7 @@ class OrderRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     User user = Provider.of<AuthProvider>(context).getUser;
-    String role = 'shipper';
+    String? role = user.role;
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, '/order', arguments: orderModel);

@@ -6,6 +6,7 @@ import 'package:food_app/models/models.dart';
 import 'package:food_app/models/store_model.dart';
 import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/providers/cart_provider.dart';
+import 'package:food_app/services/store_services.dart';
 import 'package:food_app/widgets/back_button.dart' as BackButton;
 import 'package:food_app/widgets/build_bage.dart';
 import 'package:food_app/widgets/item_row.dart';
@@ -22,6 +23,14 @@ class _StoreViewState extends State<StoreView> {
   late List<ItemModel> _offersArray;
   List<SubChoiceModel>? _subChoiceList;
   List<ChoiceModel>? _choiceList;
+
+  Future<dynamic> _fetchStoreDetail(String id) async {
+    final data = await StoreServices.fetchStore(id);
+    setState(() {
+      _offersArray = data.items ?? [];
+    });
+    return data;
+  }
 
   @override
   void initState() {

@@ -8,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ApiService {
   static String api = '${dotenv.get('API_URL')}/';
 
-  static Future get(String url, Map<String, dynamic>? params) async {
+  static Future get(String url, Map<dynamic, dynamic>? params) async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       String? accessToken = prefs.getString('access_token');
@@ -26,7 +26,7 @@ class ApiService {
     }
   }
 
-  static Future update(String url, Map<String, dynamic>? data,
+  static Future update(String url, Map<dynamic, dynamic> data,
       {String medthod = 'POST'}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString('access_token');

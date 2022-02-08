@@ -10,7 +10,7 @@ class ToastUtils {
     Fluttertoast.showToast(
         msg: message,
         gravity: ToastGravity.TOP,
-        backgroundColor: Colors.red[600],
+        backgroundColor: Colors.red[400],
         timeInSecForIosWeb: 2);
   }
 }

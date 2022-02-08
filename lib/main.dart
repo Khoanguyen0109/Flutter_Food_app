@@ -115,7 +115,7 @@ class _MainAppState extends State<MainApp> {
                   '/signup': (context) => SignUp(),
                   '/forgot_password': (context) => ForgotPassword(),
                   '/view_items': (context) =>
-                      ViewItems(settings.arguments as List<CategoryModel>?),
+                      ViewItems(settings.arguments as Map<dynamic, dynamic>),
                   '/item_detail': (context) =>
                       ItemDetail(settings.arguments as ItemModel),
                   '/cart': (context) => Cart(),

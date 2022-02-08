@@ -24,7 +24,7 @@ class CartProvider extends ChangeNotifier {
   double get totalPay {
     double total = 0;
     _items.forEach((element) {
-      total += element.totalPrice;
+      total += element.item.price * element.quantity;
     });
     // print(_items);
     return total;
@@ -35,8 +35,7 @@ class CartProvider extends ChangeNotifier {
     if (index != -1) {
       _items[index].quantity += quantity;
     } else {
-      _items.add(OrderItem(
-          quantity: quantity, item: item, totalPrice: item.price * quantity));
+      _items.add(OrderItem(quantity: quantity, item: item));
     }
     _storeId = item.storeId;
     notifyListeners();
@@ -56,8 +55,7 @@ class CartProvider extends ChangeNotifier {
 
   void addFirstItemToBasket(ItemModel item, int quantity) async {
     List<OrderItem> list = [];
-    list.add(OrderItem(
-        quantity: quantity, item: item, totalPrice: item.price * quantity));
+    list.add(OrderItem(quantity: quantity, item: item));
     _items = list;
     _storeId = item.storeId;
 

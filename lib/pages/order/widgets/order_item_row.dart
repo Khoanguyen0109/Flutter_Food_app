@@ -34,7 +34,9 @@ class OrderItemRow extends StatelessWidget {
           ],
         ),
         Expanded(
-          child: Text(orderItem.totalPrice.toString() + "$CURRENCY",
+          child: Text(
+              (orderItem.item.price * orderItem.quantity).toString() +
+                  "$CURRENCY",
               textAlign: TextAlign.end,
               style: TextStyle(
                   fontSize: 14,

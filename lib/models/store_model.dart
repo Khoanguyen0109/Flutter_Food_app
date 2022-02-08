@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:food_app/models/models.dart';
+
 class StoreModel {
   String id;
   String name;
@@ -9,6 +11,7 @@ class StoreModel {
   int category;
   double review;
   int? status;
+  List<ItemModel>? items;
   StoreModel(
       {required this.id,
       required this.name,
@@ -17,7 +20,8 @@ class StoreModel {
       required this.address,
       required this.category,
       required this.review,
-      this.status});
+      this.status,
+      this.items});
 
   Map<String, dynamic> toMap() {
     return {
@@ -42,6 +46,9 @@ class StoreModel {
       category: map['category'] ?? '',
       review: map['review']?.toDouble() ?? 0.0,
       status: map['status']?.toInt(),
+      items: map['items'] != null
+          ? List<ItemModel>.from(map['items']?.map((x) => ItemModel.fromMap(x)))
+          : null,
     );
   }
 

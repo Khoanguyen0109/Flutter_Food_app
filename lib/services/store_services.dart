@@ -9,6 +9,7 @@ class StoreServices {
   ) async {
     try {
       String url = 'auth/merchant';
+      print(category);
       final data = await ApiService.get(url, null);
       List<StoreModel> dataList = [];
       for (var u in data['data']) {
@@ -35,7 +36,7 @@ class StoreServices {
     return [CategoryModel.fromJson(data)];
   }
 
-  static Future<StoreModel> fetchStore(int id) async {
+  static Future<StoreModel> fetchStore(String id) async {
     String url = '';
     final data = await ApiService.get(url, null);
     return StoreModel.fromJson(data);

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
 import 'package:food_app/configs/my_class.dart';
 import 'package:food_app/models/models.dart';
 import 'package:food_app/pages/store/store_card.dart';
+import 'package:food_app/providers/app_localizations.dart';
 
 class HorizontalScrollList extends StatefulWidget {
   // HorizontalScrollList({Key? key}) : super(key: key);
@@ -14,12 +14,13 @@ class HorizontalScrollList extends StatefulWidget {
   late final String routeName;
 
   late final List<dynamic> list;
-
+  Map<dynamic, dynamic> routeArgs;
   HorizontalScrollList({
     Key? key,
     required this.title,
     required this.routeName,
     required this.list,
+    required this.routeArgs,
   }) : super(key: key);
   @override
   State<HorizontalScrollList> createState() => _HorizontalScrollListState();
@@ -50,7 +51,8 @@ class _HorizontalScrollListState extends State<HorizontalScrollList> {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, widget.routeName);
+                  Navigator.pushNamed(context, widget.routeName,
+                      arguments: widget.routeArgs);
                 },
                 style: ButtonStyle(
                     backgroundColor:

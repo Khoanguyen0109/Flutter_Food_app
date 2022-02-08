@@ -7,12 +7,11 @@ class CategoryModel {
   String title;
   String image;
   // List<ItemModel>? itemsList;
-  List<StoreModel> storeList;
+  // List<StoreModel> storeList;
   CategoryModel(
     this.id,
     this.title,
     this.image,
-    this.storeList,
   );
 
   Map<String, dynamic> toMap() {
@@ -20,7 +19,6 @@ class CategoryModel {
       'id': id,
       'title': title,
       'image': image,
-      'storeList': storeList.map((x) => x.toMap()).toList(),
     };
   }
 
@@ -29,8 +27,6 @@ class CategoryModel {
       map['id']?.toInt() ?? 0,
       map['title'] ?? '',
       map['image'] ?? '',
-      List<StoreModel>.from(
-          map['storeList']?.map((x) => StoreModel.fromMap(x))),
     );
   }
 

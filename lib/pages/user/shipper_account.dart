@@ -28,8 +28,8 @@ class _ProfileTabState extends State<ShipperProfile> {
     final authProvider = Provider.of<AuthProvider>(context);
     User user = authProvider.getUser;
     Future<void> onSignout() async {
+      await Navigator.of(context).pushReplacementNamed('/login');
       authProvider.signOut();
-      Navigator.of(context).pushReplacementNamed('/login');
     }
 
     return Scaffold(

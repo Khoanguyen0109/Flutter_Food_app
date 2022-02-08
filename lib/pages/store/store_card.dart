@@ -48,7 +48,7 @@ class StoreCard extends StatelessWidget {
               SizedBox(height: 5),
               Text(storeModel.address,
                   maxLines: 1,
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.left,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                       fontSize: 13,

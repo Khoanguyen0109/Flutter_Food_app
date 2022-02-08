@@ -50,7 +50,6 @@ class _HomeTabState extends State<HomeTab> {
 
   Future<dynamic> _fetchStoreList(String? searchValue) async {
     final data = await StoreServices.fetchStoreList(searchValue, null);
-    // print(data[0].address);
     setState(() {
       _storeArray = data;
     });
@@ -150,41 +149,19 @@ class _HomeTabState extends State<HomeTab> {
       //     review: 5.0)
     ];
 
-    _storeArray = [
-      // StoreModel(
-      //     id: '1',
-      //     name: "Papaxot",
-      //     image: 'assets/images/temp_item4.png',
-      //     description: "156 Nguyen thi thap  ",
-      //     address: "156 Nguyen thi thap  ",
-      //     category: 0,
-      //     review: 5.0),
-      // StoreModel(
-      //     id: '2',
-      //     name: "Papaxot",
-      //     image: 'assets/images/temp_item4.png',
-      //     description: "156 Nguyen thi thap  ",
-      //     address: "156 Nguyen thi thap 156 Nguyen thi thap  ",
-      //     category: 0,
-      //     review: 5.0),
-      // StoreModel(
-      //     id: '3',
-      //     name: "Papaxot",
-      //     image: 'assets/images/temp_item4.png',
-      //     description: "156 Nguyen thi thap  ",
-      //     category: 0,
-      //     address: "156 Nguyen thi thap  ",
-      //     review: 5.0)
-    ];
+    _storeArray = [];
 
     _categoriesArray = [
-      CategoryModel(1, 'Rice', 'assets/images/temp_item5.png', _storeArray!),
-      CategoryModel(2, 'Noodles', 'assets/images/temp_item6.png', _storeArray!),
-      CategoryModel(3, 'Drink', 'assets/images/temp_item4.png', _storeArray!),
       CategoryModel(
-          4, 'Fast Food', 'assets/images/temp_item7.png', _storeArray!),
-      CategoryModel(5, 'Healthy', 'assets/images/temp_item8.png', _storeArray!),
-      CategoryModel(6, 'Snacks', 'assets/images/temp_item9.png', _storeArray!)
+        0,
+        'Rice',
+        'assets/images/temp_item6.png',
+      ),
+      CategoryModel(1, 'Noodles', 'assets/images/temp_item9.png'),
+      CategoryModel(2, 'Drink', 'assets/images/drinks.png'),
+      CategoryModel(3, 'Fast Food', 'assets/images/temp_item4.png'),
+      CategoryModel(4, 'Healthy', 'assets/images/healthy.png'),
+      CategoryModel(5, 'Snacks', 'assets/images/snacks.png')
     ];
   }
 
@@ -439,14 +416,22 @@ class _HomeTabState extends State<HomeTab> {
                         child: HorizontalScrollList(
                             title: "Popular",
                             routeName: "/view_items",
-                            list: _storeArray as List<dynamic>),
+                            list: _storeArray as List<dynamic>,
+                            routeArgs: {
+                              'categoryList': _categoriesArray,
+                              'index': 0
+                            }),
                       ),
                       Visibility(
                         visible: !onSearching,
                         child: HorizontalScrollList(
                             title: "Popular",
                             routeName: "/view_items",
-                            list: _storeArray as List<dynamic>),
+                            list: _storeArray as List<dynamic>,
+                            routeArgs: {
+                              'categoryList': _categoriesArray,
+                              'index': 0
+                            }),
                       ),
                       SizedBox(height: 20),
                       Visibility(
@@ -600,8 +585,10 @@ class _HomeTabState extends State<HomeTab> {
 
   Widget categoryItem(CategoryModel categoryModel) {
     return GestureDetector(
-        onTap: () => Navigator.pushNamed(context, "/view_items",
-            arguments: _categoriesArray),
+        onTap: () => Navigator.pushNamed(context, "/view_items", arguments: {
+              'categoryList': _categoriesArray,
+              'index': categoryModel.id
+            }),
         child: Container(
           width: 160,
           margin: const EdgeInsets.all(10),

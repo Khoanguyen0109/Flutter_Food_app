@@ -32,18 +32,18 @@ class _OrderListState extends State<OrderList> {
         deliveryAddress: "422 nguyen thi thap",
         orderItems: [
           new OrderItem(
-              quantity: 3,
-              item: ItemModel(
-                  id: 1,
-                  name: 'Meat Ball Pasta',
-                  description: 'Spicy Meat Ball Pasta',
-                  image: 'assets/images/temp_item1.png',
-                  reviews: 25,
-                  price: 3.5,
-                  status: 1,
-                  storeId: 1,
-                  choicesList: null),
-              totalPrice: 122)
+            quantity: 3,
+            item: ItemModel(
+                id: 1,
+                name: 'Meat Ball Pasta',
+                description: 'Spicy Meat Ball Pasta',
+                image: 'assets/images/temp_item1.png',
+                reviews: 25,
+                price: 3.5,
+                status: 1,
+                storeId: 1,
+                choicesList: null),
+          )
         ],
         delyveryCost: 2,
         itemCost: 122,

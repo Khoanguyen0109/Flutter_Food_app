@@ -33,7 +33,7 @@ class AuthWrapperJwt extends StatelessWidget {
         builder: (_, AsyncSnapshot<User?> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             final User? user = snapshot.data;
-            String role = 'user';
+            String? role = user?.role;
             if (user != null) {
               Provider.of<AuthProvider>(context).setUser(user);
             }

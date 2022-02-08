@@ -70,6 +70,9 @@ class AuthServices {
       String url = 'auth/profile';
       final response = await ApiService.get(url, {token: token});
       print(response);
+      Map<dynamic, dynamic> user = response['data'];
+      user['role'] = response['data']['roles'][0]['name'];
+      print(user);
       return User.fromMap(response['data']);
     } catch (e) {
       print(e.toString());

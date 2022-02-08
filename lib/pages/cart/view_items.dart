@@ -14,8 +14,8 @@ import 'package:food_app/widgets/dotted_line.dart';
 import 'package:food_app/widgets/resolution_not_supported.dart';
 
 class ViewItems extends StatefulWidget {
-  final List<CategoryModel>? categoryList;
-  ViewItems(this.categoryList);
+  Map<dynamic, dynamic> args;
+  ViewItems(this.args);
 
   @override
   _ViewItemsState createState() => _ViewItemsState();
@@ -34,20 +34,19 @@ class _ViewItemsState extends State<ViewItems> {
 
   List<StoreModel> _storeList = [];
 
-  getStoreByCategory() async {
-    // dynamic stores = await StoreServices.fetchStoreList();
-  }
-
   @override
   void initState() {
-    // TODO: implement initState
-
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
+
+    getStoreByCategory(int category) async {
+      final data = await StoreServices.fetchStoreList(null, category);
+      return data;
+    }
 
     int gridCount = 0;
     if (deviceType == DeviceType.WEB) {
@@ -56,7 +55,8 @@ class _ViewItemsState extends State<ViewItems> {
     }
 
     return DefaultTabController(
-      length: widget.categoryList!.length,
+      length: widget.args['categoryList']!.length,
+      initialIndex: widget.args['index'],
       child: Scaffold(
         backgroundColor: backgroundColor,
         body: Column(
@@ -134,8 +134,10 @@ class _ViewItemsState extends State<ViewItems> {
                           unselectedLabelStyle:
                               TextStyle(fontWeight: FontWeight.w400),
                           tabs: List<Widget>.generate(
-                              widget.categoryList!.length, (int index) {
-                            return Tab(text: widget.categoryList![index].title);
+                              widget.args['categoryList']!.length, (int index) {
+                            return Tab(
+                                text:
+                                    widget.args['categoryList']![index].title);
                           })),
                     ],
                   ),
@@ -143,9 +145,9 @@ class _ViewItemsState extends State<ViewItems> {
             SizedBox(height: 3),
             Expanded(
               child: TabBarView(
-                children: List<Widget>.generate(widget.categoryList!.length,
-                    (int index) {
-                  final storeList = widget.categoryList![index].storeList;
+                children: List<Widget>.generate(
+                    widget.args['categoryList']!.length, (int index) {
+                  final storeList = _storeList;
                   _scrollController = new ScrollController();
                   _cartScrollController = new ScrollController();
 
@@ -218,21 +220,32 @@ class _ViewItemsState extends State<ViewItems> {
                   } else if (deviceType == DeviceType.TABLET ||
                       deviceType == DeviceType.MOBILE) {
                     return Scrollbar(
-                      controller: _scrollController,
-                      isAlwaysShown:
-                          (deviceType == DeviceType.MOBILE) ? false : true,
-                      child: ListView.builder(
                         controller: _scrollController,
-                        physics: BouncingScrollPhysics(),
-                        padding: const EdgeInsetsDirectional.fromSTEB(
-                            20, 10, 20, 30),
-                        itemCount: storeList!.length,
-                        itemBuilder: (context, pos) {
-                          // return _menuItem(itemList[pos]);
-                          return StoreRow(storeList[pos]);
-                        },
-                      ),
-                    );
+                        isAlwaysShown:
+                            (deviceType == DeviceType.MOBILE) ? false : true,
+                        child: FutureBuilder(
+                          future: getStoreByCategory(index),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.none) {
+                              return Container();
+                            }
+                            final List<StoreModel>? storeList =
+                                snapshot.data as List<StoreModel>?;
+
+                            return ListView.builder(
+                              controller: _scrollController,
+                              physics: BouncingScrollPhysics(),
+                              padding: const EdgeInsetsDirectional.fromSTEB(
+                                  20, 10, 20, 30),
+                              itemCount: storeList?.length ?? 0,
+                              itemBuilder: (context, pos) {
+                                // return _menuItem(itemList[pos]);
+                                return StoreRow(storeList![pos]);
+                              },
+                            );
+                          },
+                        ));
                   } else
                     return screenSizeNotSupported(context);
                 }),
