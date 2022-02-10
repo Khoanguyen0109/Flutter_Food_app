@@ -42,26 +42,26 @@ class _OrderTabState extends State<OrderTab> {
     ];
 
     _offersArray = [
-      ItemModel(
-          id: 1,
-          name: 'Meat Ball Pasta',
-          description: 'Spicy Meat Ball Pasta',
-          image: 'assets/images/temp_item1.png',
-          reviews: 25,
-          price: 3.5,
-          status: 1,
-          storeId: 1,
-          choicesList: _choiceList),
-      ItemModel(
-          id: 2,
-          name: 'Meat Ball Pasta',
-          description: 'Spicy Meat Ball Pasta',
-          image: 'assets/images/temp_item1.png',
-          reviews: 25,
-          price: 3.5,
-          status: 1,
-          storeId: 1,
-          choicesList: _choiceList),
+      // ItemModel(
+      //     id: 1,
+      //     name: 'Meat Ball Pasta',
+      //     description: 'Spicy Meat Ball Pasta',
+      //     image: 'assets/images/temp_item1.png',
+      //     reviews: 25,
+      //     price: 3.5,
+      //     status: 1,
+      //     storeId: 1,
+      //     choicesList: _choiceList),
+      // ItemModel(
+      //     id: 2,
+      //     name: 'Meat Ball Pasta',
+      //     description: 'Spicy Meat Ball Pasta',
+      //     image: 'assets/images/temp_item1.png',
+      //     reviews: 25,
+      //     price: 3.5,
+      //     status: 1,
+      //     storeId: 1,
+      //     choicesList: _choiceList),
     ];
   }
 
@@ -108,7 +108,7 @@ class _OrderTabState extends State<OrderTab> {
                     letterSpacing: 0.5,
                     color: textDarkColor)),
           ),
-          OrderList(),
+          Expanded(child: OrderList()),
         ],
       );
       // return SafeArea(

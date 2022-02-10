@@ -41,7 +41,7 @@
   "free": "Free",
   "sub_total": "Sub Total",
   "grand_total": "Grand Total",
-  "total_inclusive_tax": "Total (incl. GST)",
+  "total_inclusive_tax": "Total ",
   "have_voucher": "Have Voucher?",
   "address": "Address",
   "payment_method": "Payment Method",

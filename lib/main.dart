@@ -119,8 +119,7 @@ class _MainAppState extends State<MainApp> {
                   '/item_detail': (context) =>
                       ItemDetail(settings.arguments as ItemModel),
                   '/cart': (context) => Cart(),
-                  '/order': (conext) =>
-                      Order(order: settings.arguments as OrderModel),
+                  '/order': (conext) => Order(orderId: settings.arguments),
                   '/orderList': (conext) => OrderListView(),
                   '/select_address': (context) => SelectAddress(),
                   '/payment_method': (context) => PaymentMethod(),

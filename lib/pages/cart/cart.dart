@@ -26,7 +26,7 @@ class _CartState extends State<Cart> {
   bool _validate = false;
 
   String location = '';
-  int paymentMethod = 1;
+  int paymentMethod = 0;
 
   @override
   void initState() {
@@ -71,25 +71,20 @@ class _CartState extends State<Cart> {
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
     List<OrderItem> cartList = Provider.of<CartProvider>(context).items;
     int? storeId = Provider.of<CartProvider>(context).storeId;
-    print(_validate);
     double grandTotal = Provider.of<CartProvider>(context).totalPay;
     submitOrder() async {
       if (_locationInputController.text.isEmpty) {
-        // print(_locationInputController.text);
-
         setState(() {
           _validate = true;
         });
       } else {
-        final order = await OrderServices.createOrder(
+        final orderId = await OrderServices.createOrder(
             storeId, cartList, _locationInputController.text, paymentMethod);
-        if (order != null) {
-          Navigator.pushNamed(context, "/order");
+        if (orderId != null) {
+          Navigator.pushNamed(context, "/order", arguments: orderId);
 
           ToastUtils.toastSucessfull("Order Successfull");
         } else {
-          // Navigator.pushNamed(context, "/order");
-
           ToastUtils.toastFailed("Submit order Failed");
         }
       }
@@ -263,7 +258,6 @@ class _CartState extends State<Cart> {
 
   Widget menuItem(DeviceType deviceType, OrderItem orderItem, updateCartItem) {
     void update(int quantity) {
-      print(quantity);
       updateCartItem(orderItem.item, quantity);
     }
 
@@ -284,7 +278,7 @@ class _CartState extends State<Cart> {
         ),
         child: Row(
           children: [
-            Image.asset(orderItem.item.image,
+            Image.network(orderItem.item.image,
                 width: 100, height: 100, fit: BoxFit.fitHeight),
             SizedBox(width: 10),
             Expanded(
@@ -364,42 +358,42 @@ class _CartState extends State<Cart> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(AppLocalizations.of(context)!.translate('sub_total')!,
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 0.5,
-                        color: textMidColor)),
-                Text('${CURRENCY}90',
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 0.5,
-                        color: textMidColor)),
-              ],
-            ),
-            SizedBox(height: 10),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text(AppLocalizations.of(context)!.translate('sub_total')!,
+            //         style: TextStyle(
+            //             fontSize: 15,
+            //             fontWeight: FontWeight.w400,
+            //             letterSpacing: 0.5,
+            //             color: textMidColor)),
+            //     Text('${CURRENCY}90',
+            //         style: TextStyle(
+            //             fontSize: 15,
+            //             fontWeight: FontWeight.w400,
+            //             letterSpacing: 0.5,
+            //             color: textMidColor)),
+            //   ],
+            // ),
+            // SizedBox(height: 10),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(AppLocalizations.of(context)!.translate('delivery_cost')!,
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 0.5,
-                        color: textMidColor)),
-                Text(AppLocalizations.of(context)!.translate('free')!,
-                    style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 0.5,
-                        color: textMidColor)),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text(AppLocalizations.of(context)!.translate('delivery_cost')!,
+            //         style: TextStyle(
+            //             fontSize: 15,
+            //             fontWeight: FontWeight.w400,
+            //             letterSpacing: 0.5,
+            //             color: textMidColor)),
+            //     Text(AppLocalizations.of(context)!.translate('free')!,
+            //         style: TextStyle(
+            //             fontSize: 15,
+            //             fontWeight: FontWeight.w400,
+            //             letterSpacing: 0.5,
+            //             color: textMidColor)),
+            //   ],
+            // ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: DottedLine(dashWidth: 5, color: lineColor),
@@ -641,9 +635,9 @@ class _CartState extends State<Cart> {
       case -1:
         return AppLocalizations.of(context)!.translate('btn_select');
 
-      case 1:
+      case 0:
         return "Cash";
-      case 2:
+      case 1:
         return "Credit card";
       default:
     }

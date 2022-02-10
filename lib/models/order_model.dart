@@ -4,29 +4,34 @@ import 'package:food_app/models/models.dart';
 import 'package:food_app/models/order_item_models.dart';
 import 'package:food_app/models/shipper.dart';
 import 'package:food_app/models/store_model.dart';
+import 'package:food_app/models/user_model.dart';
 
 class OrderModel {
-  int id;
+  dynamic id;
   String deliveryAddress;
   StoreModel storeModel;
-  List<OrderItem> orderItems;
+  List<OrderItem>? orderItems;
+  User user;
   double delyveryCost;
   double itemCost;
   double total;
   int paymentMethod;
   Shipper? shipper;
   int status;
+  DateTime createdAt;
   OrderModel({
     required this.id,
     required this.deliveryAddress,
     required this.storeModel,
-    required this.orderItems,
+    this.orderItems,
+    required this.user,
     required this.delyveryCost,
     required this.itemCost,
     required this.total,
     required this.paymentMethod,
     this.shipper,
     required this.status,
+    required this.createdAt,
   });
 
   @override
@@ -61,29 +66,35 @@ class OrderModel {
       'id': id,
       'deliveryAddress': deliveryAddress,
       'storeModel': storeModel.toMap(),
-      'orderItems': orderItems.map((x) => x.toMap()).toList(),
+      'orderItems': orderItems?.map((x) => x?.toMap())?.toList(),
+      'user': user.toMap(),
       'delyveryCost': delyveryCost,
       'itemCost': itemCost,
       'total': total,
       'paymentMethod': paymentMethod,
       'shipper': shipper?.toMap(),
       'status': status,
+      'createdAt': createdAt.millisecondsSinceEpoch,
     };
   }
 
   factory OrderModel.fromMap(Map<String, dynamic> map) {
     return OrderModel(
-      id: map['id']?.toInt() ?? 0,
-      deliveryAddress: map['deliveryAddress'] ?? '',
-      storeModel: StoreModel.fromMap(map['storeModel']),
-      orderItems: List<OrderItem>.from(
-          map['orderItems']?.map((x) => OrderItem.fromMap(x))),
-      delyveryCost: map['delyveryCost']?.toDouble() ?? 0.0,
-      itemCost: map['itemCost']?.toDouble() ?? 0.0,
-      total: map['total']?.toDouble() ?? 0.0,
-      paymentMethod: map['paymentMethod']?.toInt() ?? 0,
-      shipper: map['shipper'] != null ? Shipper.fromMap(map['shipper']) : null,
-      status: map['status']?.toInt() ?? 0,
+      id: map['id'] ?? null,
+      deliveryAddress: map['address'] ?? '',
+      storeModel: StoreModel.fromMap(map['merchant']),
+      orderItems: map['orderItems'] != null
+          ? List<OrderItem>.from(
+              map['orderItems']?.map((x) => OrderItem.fromMap(x)))
+          : null,
+      user: User.fromMap(map['user']),
+      delyveryCost: map['delivery_cost']?.toDouble() ?? 0.0,
+      itemCost: map['item_cost']?.toDouble() ?? 0.0,
+      total: map['total_bill']?.toDouble() ?? 0.0,
+      paymentMethod: map['paymentMethod'] ?? 0,
+      // shipper: map['shipper'] != null ? Shipper.fromMap(map['shipper']) : null,
+      status: map['status'] ?? 0,
+      createdAt: DateTime.parse(map['createAt']),
     );
   }
 

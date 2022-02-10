@@ -32,8 +32,6 @@ class _NotificationInitState extends State<NotificationInit> {
   setupNotificiation() async {
     messaging = FirebaseMessaging.instance;
     messaging.getToken().then((value) {
-      print(value);
-
       Future.delayed(Duration.zero, () async {
         //your async 'await' codes goes here
         SharedPreferences prefs = await SharedPreferences.getInstance();

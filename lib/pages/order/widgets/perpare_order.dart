@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/utils/constants.dart';
+import 'package:food_app/utils/utils.dart';
 import 'package:food_app/widgets/circular_progress_bar.dart';
 
 class PrepareOrder extends StatelessWidget {
@@ -36,7 +37,7 @@ class PrepareOrder extends StatelessWidget {
                 child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("PREPARING",
+                Text(Utils.renderStatus(status),
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 22,

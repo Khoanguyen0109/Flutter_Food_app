@@ -34,6 +34,7 @@ class _StoreViewState extends State<StoreView> {
 
   @override
   void initState() {
+    _fetchStoreDetail(widget.storeModel.id);
     super.initState();
 
     _subChoiceList = [
@@ -51,47 +52,56 @@ class _StoreViewState extends State<StoreView> {
     ];
 
     _offersArray = [
-      ItemModel(
-          id: 1,
-          name: 'Meat Ball Pasta',
-          description: 'Spicy Meat Ball Pasta',
-          image: 'assets/images/temp_item1.png',
-          reviews: 25,
-          price: 3.5,
-          status: 1,
-          storeId: 1,
-          choicesList: _choiceList),
-      ItemModel(
-          id: 2,
-          name: 'Meat Ball Pasta',
-          description: 'Spicy Meat Ball Pasta',
-          image: 'assets/images/temp_item2.png',
-          reviews: 25,
-          price: 3.5,
-          status: 1,
-          storeId: 2,
-          choicesList: _choiceList),
-      ItemModel(
-          id: 3,
-          name: 'Meat Ball Pasta',
-          description: 'Spicy Meat Ball Pasta',
-          image: 'assets/images/temp_item3.png',
-          reviews: 25,
-          price: 3.5,
-          status: 1,
-          storeId: 1,
-          choicesList: _choiceList),
-      ItemModel(
-          id: 1,
-          name: 'Meat Ball Pasta',
-          description: 'Spicy Meat Ball Pasta',
-          image: 'assets/images/temp_item1.png',
-          reviews: 25,
-          price: 3.5,
-          status: 1,
-          storeId: 1,
-          choicesList: _choiceList),
+      // ItemModel(
+      //     id: 1,
+      //     name: 'Meat Ball Pasta',
+      //     description: 'Spicy Meat Ball Pasta',
+      //     image: 'assets/images/temp_item1.png',
+      //     reviews: 25,
+      //     price: 3.5,
+      //     status: 1,
+      //     storeId: 1,
+      //     choicesList: _choiceList),
+      // ItemModel(
+      //     id: 2,
+      //     name: 'Meat Ball Pasta',
+      //     description: 'Spicy Meat Ball Pasta',
+      //     image: 'assets/images/temp_item2.png',
+      //     reviews: 25,
+      //     price: 3.5,
+      //     status: 1,
+      //     storeId: 2,
+      //     choicesList: _choiceList),
+      // ItemModel(
+      //     id: 3,
+      //     name: 'Meat Ball Pasta',
+      //     description: 'Spicy Meat Ball Pasta',
+      //     image: 'assets/images/temp_item3.png',
+      //     reviews: 25,
+      //     price: 3.5,
+      //     status: 1,
+      //     storeId: 1,
+      //     choicesList: _choiceList),
+      // ItemModel(
+      //     id: 1,
+      //     name: 'Meat Ball Pasta',
+      //     description: 'Spicy Meat Ball Pasta',
+      //     image: 'assets/images/temp_item1.png',
+      //     reviews: 25,
+      //     price: 3.5,
+      //     status: 1,
+      //     storeId: 1,
+      //     choicesList: _choiceList),
     ];
+  }
+
+  @override
+  void dispose() {
+    // setState(() {
+    //   _offersArray = [];
+    // });
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -148,7 +158,7 @@ class _StoreViewState extends State<StoreView> {
                         widget.storeModel.name,
                         style: TextStyle(
                             color: primaryColor,
-                            fontSize: 30,
+                            fontSize: 20,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -156,7 +166,7 @@ class _StoreViewState extends State<StoreView> {
                     flexibleSpace: FlexibleSpaceBar(
                         background: Opacity(
                       opacity: 0.4,
-                      child: Image.asset("assets/images/temp_item1.png",
+                      child: Image.network(widget.storeModel.image,
                           width: 18, height: 18),
                     )),
                   ),

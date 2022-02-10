@@ -40,16 +40,17 @@ class _OfferTabState extends State<OfferTab> {
     ];
 
     _offersArray = [
-      ItemModel(
-          id: 1,
-          name: 'Meat Ball Pasta',
-          description: 'Spicy Meat Ball Pasta',
-          image: 'assets/images/temp_item1.png',
-          reviews: 25,
-          price: 3.5,
-          status: 1,
-          storeId: 1,
-          choicesList: _choiceList),
+      // ItemModel(
+      //     id: 1,
+      //     name: 'Meat Ball Pasta',
+      //     description: 'Spicy Meat Ball Pasta',
+      //     image:
+      //         'https://www.google.com/url?sa=i&url=https%3A%2F%2Fpixabay.com%2Fimages%2Fsearch%2Fnature%2F&psig=AOvVaw1Th9JwtMAjJoQuDRplgOzx&ust=1644476239803000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCOjs48KF8vUCFQAAAAAdAAAAABAD',
+      //     reviews: 25,
+      //     price: 3.5,
+      //     status: 1,
+      //     storeId: 1,
+      //     choicesList: _choiceList),
     ];
   }
 
@@ -98,7 +99,7 @@ class _OfferTabState extends State<OfferTab> {
             physics: BouncingScrollPhysics(),
             padding: const EdgeInsets.all(20),
             children: [
-              ItemRow(itemModel: _offersArray[0]),
+              // ItemRow(itemModel: _offersArray),
             ],
           ),
         ),

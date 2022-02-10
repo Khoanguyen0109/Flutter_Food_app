@@ -18,9 +18,9 @@ class OrderItem {
     };
   }
 
-  factory OrderItem.fromMap(Map<String, dynamic> map) {
+  factory OrderItem.fromMap(Map<dynamic, dynamic> map) {
     return OrderItem(
-      quantity: map['quantity']?.toInt() ?? 0,
+      quantity: map['quantity'] ?? 0,
       item: ItemModel.fromMap(map['item']),
     );
   }

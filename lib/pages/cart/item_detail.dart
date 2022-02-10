@@ -85,7 +85,7 @@ class _ItemDetailState extends State<ItemDetail> {
                 physics: BouncingScrollPhysics(),
                 children: [
                   SizedBox(height: 50),
-                  Image.asset(widget.itemModel!.image,
+                  Image.network(widget.itemModel!.image,
                       height: 200, fit: BoxFit.fitHeight),
                   SizedBox(height: 20),
                   Container(

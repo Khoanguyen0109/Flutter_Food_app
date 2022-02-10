@@ -26,10 +26,10 @@ class _ViewItemsState extends State<ViewItems> {
   ScrollController _cartScrollController = new ScrollController();
 
   List<CartModel> cartList = [
-    CartModel(1, 'Meat Ball Pasta', 'Spicy Meat Ball Pasta',
-        'assets/images/temp_item1.png', 175.00),
-    CartModel(2, 'Steak', 'Special Beef Steak', 'assets/images/temp_item2.png',
-        190.00),
+    // CartModel(1, 'Meat Ball Pasta', 'Spicy Meat Ball Pasta',
+    //     'assets/images/temp_item1.png', 175.00),
+    // CartModel(2, 'Steak', 'Special Beef Steak', 'assets/images/temp_item2.png',
+    //     190.00),
   ];
 
   List<StoreModel> _storeList = [];

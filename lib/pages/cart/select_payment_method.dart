@@ -82,13 +82,13 @@ class _PaymentMethodState extends State<PaymentMethod> {
                           AppLocalizations.of(context)!
                               .translate('cash_on_delivery')!,
                           FontAwesomeIcons.moneyBill,
-                          1),
+                          0),
                       buildSeparator(),
                       buildItem(
                           AppLocalizations.of(context)!
                               .translate('credit_card')!,
                           FontAwesomeIcons.creditCard,
-                          2),
+                          1),
                       buildSeparator(),
                     ],
                   ),

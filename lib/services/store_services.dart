@@ -11,6 +11,7 @@ class StoreServices {
       String url = 'auth/merchant';
       print(category);
       final data = await ApiService.get(url, null);
+      print(data);
       List<StoreModel> dataList = [];
       for (var u in data['data']) {
         StoreModel storeModel = StoreModel.fromMap(u);
@@ -37,8 +38,9 @@ class StoreServices {
   }
 
   static Future<StoreModel> fetchStore(String id) async {
-    String url = '';
+    String url = 'auth/merchant/$id';
     final data = await ApiService.get(url, null);
-    return StoreModel.fromJson(data);
+    print(data);
+    return StoreModel.fromMap(data['data'][0]);
   }
 }

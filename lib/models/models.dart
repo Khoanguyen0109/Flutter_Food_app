@@ -24,7 +24,7 @@ class CategoryModel {
 
   factory CategoryModel.fromMap(Map<String, dynamic> map) {
     return CategoryModel(
-      map['id']?.toInt() ?? 0,
+      map['id'] ?? 0,
       map['title'] ?? '',
       map['image'] ?? '',
     );
@@ -73,22 +73,37 @@ class ItemModel {
   }
 
   factory ItemModel.fromMap(Map<String, dynamic> map) {
-    return ItemModel(
-      id: map['id'] ?? null,
-      storeId: map['storeId'] ?? null,
-      name: map['name'] ?? '',
-      description: map['description'] ?? '',
-      image: map['image'] ?? '',
-      reviews: map['reviews']?.toDouble(),
-      price: map['price']?.toDouble() ?? 0.0,
-      status: map['status']?.toInt() ?? 0,
-      choicesList: map['choicesList'] != null
-          ? List<ChoiceModel>.from(
-              map['choicesList']?.map((x) => ChoiceModel.fromMap(x)))
-          : null,
-    );
-  }
+    List<SubChoiceModel>? _subChoiceList;
+    List<ChoiceModel>? _choiceList;
+    _subChoiceList = [
+      SubChoiceModel(1, 'Meat Ball Pasta', 5.00),
+      SubChoiceModel(2, 'Meat', 9.00),
+      SubChoiceModel(3, 'Ball Pasta', 0),
+      SubChoiceModel(4, 'Cheese', 8.00),
+    ];
 
+    _choiceList = [
+      ChoiceModel(1, 'Meat Ball Pasta', _subChoiceList),
+      ChoiceModel(2, 'Meat', _subChoiceList),
+      ChoiceModel(3, 'Ball Pasta', _subChoiceList),
+      ChoiceModel(4, 'Cheese', _subChoiceList),
+    ];
+    try {
+      return ItemModel(
+          id: map['id'] ?? null,
+          storeId: map['merchant_id'] ?? null,
+          name: map['dish_name'] ?? '',
+          description: map['desc'] ?? '',
+          image: map['image'] ?? '',
+          reviews: map['reviews']?.toDouble() ?? 0,
+          price: double.parse("${map['price']}").toDouble() ?? 0.0,
+          status: map['status'] ?? 0,
+          choicesList: _choiceList);
+    } catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
   String toJson() => json.encode(toMap());
 
   factory ItemModel.fromJson(String source) =>
@@ -112,7 +127,7 @@ class ChoiceModel {
 
   factory ChoiceModel.fromMap(Map<String, dynamic> map) {
     return ChoiceModel(
-      map['id']?.toInt() ?? 0,
+      map['id'] ?? 0,
       map['title'] ?? '',
       map['subChoicesList'] != null
           ? List<SubChoiceModel>.from(
@@ -144,7 +159,7 @@ class SubChoiceModel {
 
   factory SubChoiceModel.fromMap(Map<String, dynamic> map) {
     return SubChoiceModel(
-      map['id']?.toInt() ?? 0,
+      map['id'] ?? 0,
       map['title'] ?? '',
       map['price']?.toDouble() ?? 0.0,
     );

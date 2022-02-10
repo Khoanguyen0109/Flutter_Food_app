@@ -30,11 +30,15 @@ class ApiService {
       {String medthod = 'POST'}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString('access_token');
+    String apiUrl = '$api' + '$url';
     try {
       dynamic response;
       if (medthod == 'POST') {
-        response =
-            await http.post(Uri.parse(url), body: json.encode(data), headers: {
+        print(jsonEncode(data));
+
+        response = await http
+            .post(Uri.parse(apiUrl), body: jsonEncode(data), headers: {
+          "Content-Type": "application/json",
           HttpHeaders.authorizationHeader: 'Bearer $accessToken',
         });
       } else {
@@ -46,9 +50,11 @@ class ApiService {
 
       if (response.statusCode == 200) {
         final responseJson = jsonDecode(response.body);
+
         return responseJson;
       }
     } catch (e) {
+      print(e.toString());
       throw new Exception("AJAX ERROR");
     }
   }

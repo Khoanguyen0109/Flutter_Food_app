@@ -37,7 +37,7 @@ class CurrentOrderWrapper extends StatelessWidget {
             final OrderModel? order = snapshot.data;
             print(_isBackFromOrder);
             return (order != null && !_isBackFromOrder)
-                ? Order(order: order!)
+                ? Order(orderId: order.id)
                 : Home();
           } else {
             return Loading();

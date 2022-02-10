@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class Shipper {
-  int id;
+  dynamic id;
   String name;
   String image;
   Shipper({
@@ -20,7 +20,7 @@ class Shipper {
 
   factory Shipper.fromMap(Map<String, dynamic> map) {
     return Shipper(
-      id: map['id']?.toInt() ?? 0,
+      id: map['id'] ?? null,
       name: map['name'] ?? '',
       image: map['image'] ?? '',
     );

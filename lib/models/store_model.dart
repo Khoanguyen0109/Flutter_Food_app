@@ -45,9 +45,10 @@ class StoreModel {
       address: map['address'] ?? '',
       category: map['category'] ?? '',
       review: map['review']?.toDouble() ?? 0.0,
-      status: map['status']?.toInt(),
-      items: map['items'] != null
-          ? List<ItemModel>.from(map['items']?.map((x) => ItemModel.fromMap(x)))
+      status: map['status'] ?? 0,
+      items: map['dishes'] != null
+          ? List<ItemModel>.from(
+              map['dishes']?.map((x) => ItemModel.fromMap(x)))
           : null,
     );
   }

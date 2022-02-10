@@ -38,7 +38,7 @@ class ItemRow extends StatelessWidget {
                     Padding(
                       padding:
                           const EdgeInsetsDirectional.only(start: 10, top: 25),
-                      child: Image.asset(itemModel.image,
+                      child: Image.network(itemModel.image,
                           width: 100, height: 100, fit: BoxFit.fitHeight),
                     ),
                   ]),

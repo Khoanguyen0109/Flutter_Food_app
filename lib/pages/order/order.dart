@@ -1,6 +1,8 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food_app/widgets/loading.dart';
+import 'package:provider/provider.dart';
 
 import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
@@ -19,13 +21,12 @@ import 'package:food_app/providers/notification_provider.dart';
 import 'package:food_app/services/order_services.dart';
 import 'package:food_app/utils/constants.dart';
 import 'package:food_app/widgets/dotted_line.dart';
-import 'package:provider/provider.dart';
 
 class Order extends StatefulWidget {
-  final OrderModel order;
+  final dynamic orderId;
   Order({
     Key? key,
-    required this.order,
+    required this.orderId,
   }) : super(key: key);
 
   @override
@@ -34,10 +35,12 @@ class Order extends StatefulWidget {
 
 class _OrderState extends State<Order> {
   int status = 1;
+  OrderModel? orderModel;
   NotificationProvider? notificationProvider;
   @override
   void initState() {
     // TODO: implement initState
+    _getOrder(widget.orderId);
     super.initState();
     notificationProvider = context.read<NotificationProvider>();
     notificationProvider?.addListener(notificationListener);
@@ -45,27 +48,40 @@ class _OrderState extends State<Order> {
 
   void notificationListener() {
     if (notificationProvider != null) {
-      _getOrder(1);
+      _getOrder(widget.orderId);
     }
   }
 
   Future<OrderModel?> _getOrder(id) async {
-    print('calll');
     try {
-      OrderModel? res = await OrderServices.fetchOrderDetail(id);
-      return res;
+      OrderModel? order = await OrderServices.fetchOrderDetail(widget.orderId);
+      print(order);
+      if (order != null) {
+        setState(() {
+          orderModel = order;
+        });
+      }
+      return order;
     } catch (e) {
+      print('eseses ' + e.toString());
       return null;
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    // print(orderModel);
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
     onBack() {
       Provider.of<AuthProvider>(context, listen: false).backFromOrder();
       Navigator.pushReplacementNamed(context, '/home');
     }
+
+    // if (orderModel == null) {
+    //   return CircularProgressIndicator();
+    // }
+
+    // if (orderModel != null) {
 
     return Scaffold(
         backgroundColor: backgroundColor,
@@ -80,7 +96,7 @@ class _OrderState extends State<Order> {
                   child: Column(
                     children: [
                       PrepareOrder(
-                        status: status,
+                        status: orderModel?.status ?? 0,
                       ),
                       Container(height: 10, color: lineColor),
                       Container(
@@ -100,25 +116,33 @@ class _OrderState extends State<Order> {
                             buildDetailRow(
                                 AppLocalizations.of(context)!
                                     .translate('your_order_number')!,
-                                "#208"),
+                                '#${orderModel?.id ?? ''}'),
                             SizedBox(height: 5),
                             buildDetailRow(
                                 AppLocalizations.of(context)!
                                     .translate('delivery_address')!,
-                                "Vancouver, BC V6C 2T4"),
+                                orderModel?.deliveryAddress ?? ''),
                             SizedBox(height: 5),
                             buildDetailRow(
                                 AppLocalizations.of(context)!
                                     .translate('phone')!,
-                                "Vancouver, BC V6C 2T4"),
+                                orderModel?.user.phone ?? ''),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 15),
                               child: DottedLine(dashWidth: 5, color: lineColor),
                             ),
-                            buildDetailRow(
-                                '2x Meat Ball Pasta', "${CURRENCY}35"),
+                            Column(
+                                children: orderModel?.orderItems
+                                        ?.map(
+                                          (item) => buildDetailRowFood(
+                                              item.item.name,
+                                              "$CURRENCY${item.item.price}",
+                                              item.quantity),
+                                        )
+                                        .toList() ??
+                                    []),
                             SizedBox(height: 5),
-                            buildDetailRow('1x Steak', "${CURRENCY}20"),
+                            // buildDetailRow('1x Steak', "${CURRENCY}20"),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 15),
                               child: DottedLine(dashWidth: 5, color: lineColor),
@@ -126,16 +150,14 @@ class _OrderState extends State<Order> {
                             buildDetailRow(
                                 AppLocalizations.of(context)!
                                     .translate('sub_total')!,
-                                "${CURRENCY}90"),
+                                "${CURRENCY}${orderModel?.itemCost}"),
                             SizedBox(height: 5),
-                            buildDetailRow("$TAX_LABEL ($TAX_PERCENTAGE%)",
-                                "${CURRENCY}17"),
+
                             SizedBox(height: 5),
                             buildDetailRow(
                                 AppLocalizations.of(context)!
                                     .translate('delivery_cost')!,
-                                AppLocalizations.of(context)!
-                                    .translate('free')!),
+                                "${orderModel?.delyveryCost}"),
                             Padding(
                               padding: const EdgeInsets.symmetric(vertical: 15),
                               child: DottedLine(dashWidth: 5, color: lineColor),
@@ -152,7 +174,7 @@ class _OrderState extends State<Order> {
                                         color: textDarkColor)),
                                 SizedBox(width: 10),
                                 Expanded(
-                                  child: Text("${CURRENCY}107",
+                                  child: Text("${CURRENCY}${orderModel?.total}",
                                       textAlign: TextAlign.end,
                                       style: TextStyle(
                                           fontSize: 14,
@@ -220,7 +242,7 @@ class _OrderState extends State<Order> {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text('208',
+                            Text(orderModel?.id.toString() ?? '',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 25,
@@ -244,9 +266,10 @@ class _OrderState extends State<Order> {
             ],
           ),
         ));
+    // }
   }
 
-  buildDetailRow(String title, String value) {
+  Widget buildDetailRow(String title, String value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -255,6 +278,40 @@ class _OrderState extends State<Order> {
                 fontSize: 14,
                 fontWeight: FontWeight.w400,
                 color: textMidColor)),
+        SizedBox(width: 10),
+        Expanded(
+          child: Text(value,
+              textAlign: TextAlign.end,
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                  color: textDarkColor)),
+        ),
+      ],
+    );
+  }
+
+  Widget buildDetailRowFood(String title, String value, int quantity) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Text(title,
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: textMidColor)),
+            SizedBox(
+              width: 10,
+            ),
+            Text('x$quantity',
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: textMidColor)),
+          ],
+        ),
         SizedBox(width: 10),
         Expanded(
           child: Text(value,

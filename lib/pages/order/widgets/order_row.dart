@@ -23,7 +23,7 @@ class OrderRow extends StatelessWidget {
     String? role = user.role;
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/order', arguments: orderModel);
+        Navigator.pushNamed(context, '/order', arguments: orderModel.id);
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8),
@@ -48,7 +48,7 @@ class OrderRow extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         OrderStatusView(status: orderModel.status),
-                        Text(Utils.formatDateTime(DateTime.now()),
+                        Text(Utils.formatDateTime(orderModel.createdAt),
                             style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w400,
@@ -56,13 +56,13 @@ class OrderRow extends StatelessWidget {
                                 color: textDarkColor))
                       ],
                     ),
-                    Text(orderModel.storeModel.name,
+                    Text(orderModel.storeModel?.name ?? '',
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                             letterSpacing: 0.5,
                             color: textDarkColor)),
-                    Text(orderModel.storeModel.name,
+                    Text(orderModel.storeModel?.name ?? '',
                         style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.w400,

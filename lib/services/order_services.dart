@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:food_app/models/models.dart';
 import 'package:food_app/models/order_item_models.dart';
 import 'package:food_app/models/order_model.dart';
@@ -12,33 +14,49 @@ class OrderServices {
     return OrderModel.fromJson(data);
   }
 
-  static Future<List<OrderModel>> fetchOrderList(int id, int? status) async {
-    String url = '';
-
-    final data = await ApiService.get(url, null);
-    return [OrderModel.fromJson(data)];
+  static Future<List<OrderModel>> fetchOrderList(int? status) async {
+    String url = 'order';
+    final data = await ApiService.get(url, {'status': status});
+    print(data);
+    List<OrderModel> dataList = [];
+    for (var u in data['data']) {
+      OrderModel orderModel = OrderModel.fromMap(u);
+      dataList.add(orderModel);
+    }
+    return dataList;
   }
 
   static Future<OrderModel> fetchOrderDetail(int id) async {
-    String url = '';
-    final data = await ApiService.get(url, null);
-    List<OrderItem> orderItems = [];
+    String url = 'order/$id';
+    final res = await ApiService.get(url, null);
+    final data = res['data'];
+    final json = jsonEncode(data);
+    List<Map<dynamic, dynamic>> orderItems = [];
     for (var item in data['items']) {
-      OrderItem orderItem =
-          OrderItem(quantity: item['quantity'], item: ItemModel.fromMap(item));
+      Map<dynamic, dynamic> orderItem = {};
+      orderItem['item'] = item;
+      orderItem['quantity'] = item['quantity'];
       orderItems.add(orderItem);
     }
     data['orderItems'] = orderItems;
-    return OrderModel.fromJson(data);
+
+    final a = OrderModel.fromMap(data);
+    return a;
   }
 
-  static Future<OrderModel?> createOrder(dynamic id, List<OrderItem> itemList,
+  static Future<dynamic> createOrder(dynamic id, List<OrderItem> itemList,
       String address, int paymentmethod) async {
     try {
-      String url = '';
+      String url = 'order';
       List<Map<dynamic, dynamic>> list = [];
       for (var item in itemList) {
-        Map<dynamic, dynamic> orderItem = item.item.toMap();
+        Map<dynamic, dynamic> orderItem = {};
+        orderItem['id'] = item.item.id;
+        orderItem['dish_name'] = item.item.name;
+        orderItem['price'] = item.item.price;
+        orderItem['desc'] = item.item.description;
+        orderItem['image'] = item.item.image;
+
         orderItem['quantity'] = item.quantity;
         list.add(orderItem);
       }
@@ -49,12 +67,13 @@ class OrderServices {
       payload['address'] = address;
       payload['items'] = list;
 
-      print(payload);
+      // print(payload);
       // payload
       final data = await ApiService.update(url, payload);
-      return OrderModel.fromJson(data);
-      return null;
+      // print(data['data']['id']);
+      return data['data']['id'];
     } catch (e) {
+      print(e.toString());
       return null;
     }
   }
