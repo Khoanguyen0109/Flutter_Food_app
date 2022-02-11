@@ -4,7 +4,9 @@ import 'package:food_app/configs/configs.dart';
 import 'package:food_app/models/models.dart';
 import 'package:food_app/models/order_model.dart';
 import 'package:food_app/models/user_model.dart';
+import 'package:food_app/pages/order/order.dart';
 import 'package:food_app/providers/auth_provider.dart';
+import 'package:food_app/services/order_services.dart';
 import 'package:food_app/utils/constants.dart';
 import 'package:food_app/utils/utils.dart';
 import 'package:food_app/widgets/order_status.dart';
@@ -21,6 +23,22 @@ class OrderRow extends StatelessWidget {
   Widget build(BuildContext context) {
     User user = Provider.of<AuthProvider>(context).getUser;
     String? role = user.role;
+    takeOrder() async {
+      OrderModel? order = await OrderServices.updateOrderStatus(
+          orderModel.id, OrderStatus.REVICED);
+      if (order != null) {
+        DefaultTabController.of(context)?.animateTo(1);
+      }
+    }
+
+    deliveredOrder() async {
+      OrderModel? order = await OrderServices.updateOrderStatus(
+          orderModel.id, OrderStatus.DELIVERD);
+      if (order != null) {
+        DefaultTabController.of(context)?.animateTo(2);
+      }
+    }
+
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(context, '/order', arguments: orderModel.id);
@@ -121,7 +139,9 @@ class OrderRow extends StatelessWidget {
                                           fontWeight: FontWeight.w600,
                                           letterSpacing: 1,
                                           color: Colors.white)),
-                                  onPressed: () {}),
+                                  onPressed: () {
+                                    takeOrder();
+                                  }),
                             ),
                             Visibility(
                               visible: role == 'shipper' &&
@@ -147,7 +167,9 @@ class OrderRow extends StatelessWidget {
                                           fontWeight: FontWeight.w600,
                                           letterSpacing: 1,
                                           color: Colors.white)),
-                                  onPressed: () {}),
+                                  onPressed: () {
+                                    deliveredOrder();
+                                  }),
                             ),
                           ],
                         ),

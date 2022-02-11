@@ -14,6 +14,7 @@ class PrepareOrder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(status);
     return SizedBox(
       height: 500,
       child: Stack(
@@ -29,8 +30,8 @@ class PrepareOrder extends StatelessWidget {
           ),
           SafeArea(
             child: Center(
-                child:
-                    CircularProgressBar(currentProgress: (status / 5) * 100)),
+                child: CircularProgressBar(
+                    currentProgress: (status + 1 / 5) * 100)),
           ),
           SafeArea(
             child: Center(
@@ -46,7 +47,8 @@ class PrepareOrder extends StatelessWidget {
                         color: Colors.white)),
                 SizedBox(height: 5),
                 Visibility(
-                  visible: status != OrderStatus.REVICED,
+                  visible: status != OrderStatus.REVICED &&
+                      status != OrderStatus.DELIVERD,
                   child: Text("Food is comming",
                       style: TextStyle(
                           fontSize: 16,

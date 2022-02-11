@@ -37,6 +37,10 @@ class AuthServices {
 
   static Future<String?> login(String email, password) async {
     try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      ;
+      final String deviceToken = (prefs.getString('device_token') ?? '');
+      print(deviceToken);
       final response = await http.post(
         Uri.parse('$api' + 'auth/login'),
         headers: <String, String>{
@@ -45,6 +49,7 @@ class AuthServices {
         body: jsonEncode(<String, String>{
           'username': email,
           'password': password,
+          'divice_token': deviceToken
           // 'guard': 'user'
         }),
       );
@@ -68,14 +73,14 @@ class AuthServices {
   static Future<User?> getUser(String token) async {
     try {
       String url = 'auth/profile';
-      final response = await ApiService.get(url, {token: token});
+      final response = await ApiService.get(url, null);
       print(response);
       Map<dynamic, dynamic> user = response['data'];
       user['role'] = response['data']['roles'][0]['name'];
       print(user);
       return User.fromMap(response['data']);
     } catch (e) {
-      print(e.toString());
+      // print(e.toString());
       // ToastUtils.toastFailed('Something went wrong');
     }
   }

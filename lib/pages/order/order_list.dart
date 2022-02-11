@@ -4,9 +4,12 @@ import 'package:food_app/models/models.dart';
 import 'package:food_app/models/order_item_models.dart';
 import 'package:food_app/models/order_model.dart';
 import 'package:food_app/models/store_model.dart';
+import 'package:food_app/models/user_model.dart';
 import 'package:food_app/pages/order/widgets/order_row.dart';
+import 'package:food_app/providers/auth_provider.dart';
 import 'package:food_app/services/order_services.dart';
 import 'package:food_app/utils/constants.dart';
+import 'package:provider/provider.dart';
 
 class OrderList extends StatefulWidget {
   int? status;
@@ -57,7 +60,8 @@ class _OrderListState extends State<OrderList> {
 
   getOrderList() async {
     try {
-      List<OrderModel> orders = await OrderServices.fetchOrderList(null);
+      print(widget.status);
+      List<OrderModel> orders = await OrderServices.fetchOrderList();
       setState(() {
         _orders = orders;
       });
@@ -66,11 +70,36 @@ class _OrderListState extends State<OrderList> {
     }
   }
 
+  getPreparingOrderListShipper() async {
+    try {
+      print(widget.status);
+      List<OrderModel>? orders =
+          await OrderServices.fetchOrderPreparingList(widget.status);
+      if (orders != null) {
+        setState(() {
+          _orders = orders;
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   void initState() {
     // TODO: implement initState
-    getOrderList();
     super.initState();
+
+    Future.delayed(Duration.zero, () {
+      User user = Provider.of<AuthProvider>(context, listen: false).getUser;
+      String? role = user.role;
+      print(role);
+      if (role == 'shipper') {
+        getPreparingOrderListShipper();
+      } else {
+        getOrderList();
+      }
+    });
   }
 
   @override

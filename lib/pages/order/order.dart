@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food_app/models/user_model.dart';
 import 'package:food_app/widgets/loading.dart';
 import 'package:provider/provider.dart';
 
@@ -37,6 +38,7 @@ class _OrderState extends State<Order> {
   int status = 1;
   OrderModel? orderModel;
   NotificationProvider? notificationProvider;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -68,18 +70,32 @@ class _OrderState extends State<Order> {
     }
   }
 
+  updateStatusOrder() async {
+    try {
+      OrderModel? order = await OrderServices.updateOrderStatus(
+          orderModel?.id, OrderStatus.REVICED);
+      if (order != null) {
+        setState(() {
+          orderModel = order;
+        });
+      }
+    } catch (e) {}
+  }
+
   @override
   Widget build(BuildContext context) {
     // print(orderModel);
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
+    User user = Provider.of<AuthProvider>(context).getUser;
+    String? role = user.role;
     onBack() {
       Provider.of<AuthProvider>(context, listen: false).backFromOrder();
       Navigator.pushReplacementNamed(context, '/home');
     }
 
-    // if (orderModel == null) {
-    //   return CircularProgressIndicator();
-    // }
+    if (orderModel == null) {
+      return Container();
+    }
 
     // if (orderModel != null) {
 
@@ -95,9 +111,7 @@ class _OrderState extends State<Order> {
                   physics: BouncingScrollPhysics(),
                   child: Column(
                     children: [
-                      PrepareOrder(
-                        status: orderModel?.status ?? 0,
-                      ),
+                      PrepareOrder(status: orderModel!.status),
                       Container(height: 10, color: lineColor),
                       Container(
                         color: Colors.white,
@@ -196,7 +210,37 @@ class _OrderState extends State<Order> {
                               padding: const EdgeInsets.symmetric(vertical: 15),
                               child: DottedLine(dashWidth: 5, color: lineColor),
                             ),
-                            SizedBox(height: 20)
+                            SizedBox(height: 20),
+                            Visibility(
+                              visible: role == 'user' &&
+                                  orderModel != null &&
+                                  orderModel!.status == OrderStatus.DELIVERD,
+                              child: ElevatedButton(
+                                style: ButtonStyle(
+                                    padding: MaterialStateProperty.all(
+                                        EdgeInsets.symmetric(vertical: 15)),
+                                    shape: MaterialStateProperty.all(
+                                        RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(BORDER_RADIUS),
+                                    )),
+                                    elevation: MaterialStateProperty.all(12),
+                                    backgroundColor:
+                                        MaterialStateProperty.all(primaryColor),
+                                    textStyle: MaterialStateProperty.all(
+                                        TextStyle(color: Colors.white))),
+                                child: Text('Received',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w600,
+                                        letterSpacing: 1,
+                                        color: Colors.white)),
+                                onPressed: () {
+                                  updateStatusOrder();
+                                  // Navigator.pushReplacementNamed(context, "/home");
+                                },
+                              ),
+                            )
                           ],
                         ),
                       )

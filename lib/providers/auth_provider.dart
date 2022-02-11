@@ -22,7 +22,7 @@ class AuthProvider extends ChangeNotifier {
   void signOut() async {
     _user = null;
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.clear();
+    await preferences.remove('access_token');
     AuthServices.signOut();
     notifyListeners();
   }

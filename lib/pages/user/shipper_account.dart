@@ -28,8 +28,9 @@ class _ProfileTabState extends State<ShipperProfile> {
     final authProvider = Provider.of<AuthProvider>(context);
     User user = authProvider.getUser;
     Future<void> onSignout() async {
-      await Navigator.of(context).pushReplacementNamed('/login');
       authProvider.signOut();
+
+      Navigator.of(context).pushReplacementNamed('/login');
     }
 
     return Scaffold(
@@ -92,7 +93,7 @@ class _ProfileTabState extends State<ShipperProfile> {
                               ),
                             ),
                             SizedBox(height: 10),
-                            Text(user.name,
+                            Text(user?.name ?? '',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 22,
@@ -100,7 +101,7 @@ class _ProfileTabState extends State<ShipperProfile> {
                                     letterSpacing: 0.5,
                                     color: Colors.white)),
                             SizedBox(height: 10),
-                            Text(user.email,
+                            Text(user?.email ?? '',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 16, color: Colors.white)),

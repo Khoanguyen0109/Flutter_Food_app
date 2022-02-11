@@ -4,10 +4,14 @@ class Shipper {
   dynamic id;
   String name;
   String image;
+  String phone;
+  String? numberPlate;
   Shipper({
     required this.id,
     required this.name,
     required this.image,
+    required this.phone,
+    this.numberPlate,
   });
 
   Map<String, dynamic> toMap() {
@@ -15,6 +19,8 @@ class Shipper {
       'id': id,
       'name': name,
       'image': image,
+      'phone': phone,
+      'numberPlate': numberPlate,
     };
   }
 
@@ -23,6 +29,8 @@ class Shipper {
       id: map['id'] ?? null,
       name: map['name'] ?? '',
       image: map['image'] ?? '',
+      phone: map['phone'] ?? '',
+      numberPlate: map['phone_plate'],
     );
   }
 

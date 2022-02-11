@@ -67,8 +67,9 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void removeAll() {
+  void clearCart() {
     _items.clear();
+    _storeId = null;
     notifyListeners();
   }
 

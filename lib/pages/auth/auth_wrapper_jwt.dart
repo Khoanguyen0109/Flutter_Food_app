@@ -22,9 +22,9 @@ class AuthWrapperJwt extends StatelessWidget {
       print('accestoken : $accessToken');
       User? res = await AuthServices.getUser(accessToken);
       // print(res.toString());
-      if (res == null && accessToken != '') {
-        Provider.of<AuthProvider>(context, listen: false).signOut();
-      }
+      // if (res == null && accessToken != '') {
+      //   Provider.of<AuthProvider>(context, listen: false).signOut();
+      // }
       return res;
     }
 
@@ -33,6 +33,7 @@ class AuthWrapperJwt extends StatelessWidget {
         builder: (_, AsyncSnapshot<User?> snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             final User? user = snapshot.data;
+            print(user);
             String? role = user?.role;
             if (user != null) {
               Provider.of<AuthProvider>(context).setUser(user);

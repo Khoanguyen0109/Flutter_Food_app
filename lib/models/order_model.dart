@@ -92,7 +92,7 @@ class OrderModel {
       itemCost: map['item_cost']?.toDouble() ?? 0.0,
       total: map['total_bill']?.toDouble() ?? 0.0,
       paymentMethod: map['paymentMethod'] ?? 0,
-      // shipper: map['shipper'] != null ? Shipper.fromMap(map['shipper']) : null,
+      shipper: map['shipper'] != null ? Shipper.fromMap(map['shipper']) : null,
       status: map['status'] ?? 0,
       createdAt: DateTime.parse(map['createAt']),
     );

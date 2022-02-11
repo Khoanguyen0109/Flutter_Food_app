@@ -81,7 +81,8 @@ class _CartState extends State<Cart> {
         final orderId = await OrderServices.createOrder(
             storeId, cartList, _locationInputController.text, paymentMethod);
         if (orderId != null) {
-          Navigator.pushNamed(context, "/order", arguments: orderId);
+          Provider.of<CartProvider>(context, listen: false).clearCart();
+          Navigator.pushReplacementNamed(context, "/order", arguments: orderId);
 
           ToastUtils.toastSucessfull("Order Successfull");
         } else {

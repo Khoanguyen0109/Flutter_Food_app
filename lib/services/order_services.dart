@@ -6,17 +6,15 @@ import 'package:food_app/models/order_model.dart';
 import 'package:food_app/utils/apiService.dart';
 
 class OrderServices {
-  static String api = '';
-
   static Future<OrderModel> fetchCurrentOrder(int id) async {
     String url = '';
     final data = await ApiService.get(url, null);
     return OrderModel.fromJson(data);
   }
 
-  static Future<List<OrderModel>> fetchOrderList(int? status) async {
+  static Future<List<OrderModel>> fetchOrderList() async {
     String url = 'order';
-    final data = await ApiService.get(url, {'status': status});
+    final data = await ApiService.get(url, null);
     print(data);
     List<OrderModel> dataList = [];
     for (var u in data['data']) {
@@ -24,6 +22,23 @@ class OrderServices {
       dataList.add(orderModel);
     }
     return dataList;
+  }
+
+  static Future<List<OrderModel>?> fetchOrderPreparingList(int? status) async {
+    try {
+      String url = 'get-order';
+      final data = await ApiService.get(url, {'status': status});
+      print(data);
+      List<OrderModel> dataList = [];
+      for (var u in data['data']) {
+        OrderModel orderModel = OrderModel.fromMap(u);
+        dataList.add(orderModel);
+      }
+      return dataList;
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 
   static Future<OrderModel> fetchOrderDetail(int id) async {
@@ -78,9 +93,16 @@ class OrderServices {
     }
   }
 
-  static Future<OrderModel> updateOrderStatus(int id, int orderStatus) async {
-    String url = '';
-    final data = await ApiService.get(url, null);
-    return OrderModel.fromJson(data);
+  static Future<OrderModel?> updateOrderStatus(int id, int orderStatus) async {
+    try {
+      String url = 'order/$id';
+      final data =
+          await ApiService.update(url, {'status': orderStatus}, medthod: 'PUT');
+      print(data);
+      return OrderModel.fromMap(data['data']);
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 }

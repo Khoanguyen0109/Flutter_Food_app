@@ -55,8 +55,8 @@ class _LoginState extends State<Login> {
 
             Navigator.of(context).pushReplacementNamed('/home');
           }
-        } on FirebaseAuthException catch (error) {
-          ToastUtils.toastFailed(AuthUtils.errorMessage(error.code));
+        } catch (error) {
+          ToastUtils.toastFailed(AuthUtils.errorMessage("Login failed"));
         }
       }
     }
@@ -67,6 +67,7 @@ class _LoginState extends State<Login> {
           backgroundColor: Colors.transparent,
           brightness: Brightness.light,
           elevation: 0,
+          automaticallyImplyLeading: false,
           iconTheme: IconThemeData(color: primaryColor),
           // leading: Center(
           //   child: Container(

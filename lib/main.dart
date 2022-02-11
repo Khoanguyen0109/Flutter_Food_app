@@ -108,6 +108,7 @@ class _MainAppState extends State<MainApp> {
                   '/select_theme': (context) => SelectTheme(),
                   '/select_language': (context) => SelectLanguage(),
                   '/home': (context) => AuthWrapperJwt(),
+                  '/shipper_account': (context) => ShipperProfile(),
                   '/location': (context) => Location(),
                   '/store': (context) =>
                       StoreView(settings.arguments as StoreModel),
@@ -125,7 +126,6 @@ class _MainAppState extends State<MainApp> {
                   '/payment_method': (context) => PaymentMethod(),
                   '/my_address': (context) => MyAddress(),
                   '/my_account': (context) => MyAccount(),
-                  '/shipper_account': (context) => ShipperProfile(),
                   '/change_language': (context) => ChangeLanguage(),
                   '/change_password': (context) => ChangePassword(),
                   '/notifications': (context) => Notifications(),
