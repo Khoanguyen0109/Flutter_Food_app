@@ -56,7 +56,7 @@ class ApiService {
           HttpHeaders.authorizationHeader: 'Bearer $accessToken',
         });
       }
-
+      print(jsonDecode(response.body));
       if (response.statusCode == 200) {
         final responseJson = jsonDecode(response.body);
 

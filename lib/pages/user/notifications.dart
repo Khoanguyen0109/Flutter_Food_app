@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:food_app/models/notification_model.dart';
 import 'package:food_app/providers/app_localizations.dart';
 import 'package:food_app/configs/colors.dart';
 import 'package:food_app/configs/configs.dart';
 import 'package:food_app/configs/my_class.dart';
+import 'package:food_app/services/notification_services.dart';
 
 class Notifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
+    Future<List<NotificationModel>> _getNotificationList() async {
+      List<NotificationModel> res =
+          await NotificationServices.fecthNotificationList();
+      print(res);
+      return res;
+    }
 
     return Scaffold(
       backgroundColor: backgroundColor,
@@ -49,21 +57,33 @@ class Notifications extends StatelessWidget {
                 color: textDarkColor)),
       ),
       body: Scrollbar(
-        isAlwaysShown: (deviceType == DeviceType.MOBILE) ? false : true,
-        child: ListView(
-          physics: BouncingScrollPhysics(),
-          children: <Widget>[
-            listItem('Account Creation',
-                "Thanks for creating your account with us.", "23 Jun, 2020"),
-            listItem('Order Success',
-                "Your order has been placed successfully.", "02 Jul, 2020"),
-            listItem(
-                'Order Delivered',
-                "Your order has been delivered at your doorstep. For any issue contact us",
-                "14 Jul, 2020"),
-          ],
-        ),
-      ),
+          isAlwaysShown: (deviceType == DeviceType.MOBILE) ? false : true,
+          child: FutureBuilder(
+            future: _getNotificationList(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.none) {
+                return Container();
+              }
+              final List<NotificationModel> notificationList =
+                  snapshot.data as List<NotificationModel>;
+              print(notificationList);
+              return ListView.builder(
+                // controller: _scrollController,
+                physics: BouncingScrollPhysics(),
+                // padding: const EdgeInsetsDirectional.fromSTEB(
+                //     20, 10, 20, 30),
+                itemCount: notificationList?.length ?? 0,
+                itemBuilder: (context, i) {
+                  // print(pos);
+                  // return _menuItem(itemList[pos]);
+                  return listItem(
+                      notificationList[i].title,
+                      notificationList[i].message,
+                      notificationList[i].createdAt);
+                },
+              );
+            },
+          )),
     );
   }
 

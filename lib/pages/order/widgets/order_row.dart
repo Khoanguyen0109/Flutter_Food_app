@@ -25,7 +25,7 @@ class OrderRow extends StatelessWidget {
     String? role = user.role;
     takeOrder() async {
       OrderModel? order = await OrderServices.updateOrderStatus(
-          orderModel.id, OrderStatus.REVICED);
+          orderModel.id, OrderStatus.DELIVERING);
       if (order != null) {
         DefaultTabController.of(context)?.animateTo(1);
       }

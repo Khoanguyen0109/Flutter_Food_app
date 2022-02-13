@@ -33,6 +33,16 @@ class _LoginState extends State<Login> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    emailController.clear();
+
+    passwordController.clear();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
     // final authService = Provider.of<AuthService>(context);

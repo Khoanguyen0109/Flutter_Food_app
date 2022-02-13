@@ -12,6 +12,7 @@ import 'package:food_app/pages/user/notifications.dart';
 import 'package:food_app/pages/order/order_tracking1.dart';
 import 'package:food_app/pages/order/order_tracking2.dart';
 import 'package:food_app/providers/auth_provider.dart';
+import 'package:food_app/providers/cart_provider.dart';
 import 'package:food_app/services/auth_services.dart';
 import 'package:provider/provider.dart';
 
@@ -29,6 +30,7 @@ class _ProfileTabState extends State<ProfileTab> {
     User user = authProvider.getUser;
     Future<void> onSignout() async {
       authProvider.signOut();
+      Provider.of<CartProvider>(context, listen: false).clearCart();
       Navigator.of(context).pushReplacementNamed('/login');
     }
 

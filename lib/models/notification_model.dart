@@ -4,10 +4,12 @@ class NotificationModel {
   int id;
   String title;
   String message;
+  String createdAt;
   NotificationModel({
     required this.id,
     required this.title,
     required this.message,
+    required this.createdAt,
   });
 
   Map<String, dynamic> toMap() {
@@ -15,6 +17,7 @@ class NotificationModel {
       'id': id,
       'title': title,
       'message': message,
+      'createdAt': createdAt,
     };
   }
 
@@ -23,6 +26,7 @@ class NotificationModel {
       id: map['id']?.toInt() ?? 0,
       title: map['title'] ?? '',
       message: map['message'] ?? '',
+      createdAt: map['created_at'] ?? '',
     );
   }
 

@@ -62,11 +62,12 @@ class AuthServices {
 
         return responseJson['access_token'];
       }
-      if (response.statusCode == 401) {
+      if (response.statusCode == 401 || response.statusCode == 500) {
         ToastUtils.toastFailed('Wrong email or password');
       }
     } catch (e) {
       print(e.toString());
+      ToastUtils.toastFailed('Wrong email or password');
     }
   }
 

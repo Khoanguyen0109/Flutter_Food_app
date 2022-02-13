@@ -29,6 +29,21 @@ class _SignUpState extends State<SignUp> {
   final confirmPasswordController = TextEditingController();
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    emailController.clear();
+
+    nameController.clear();
+
+    phoneController.clear();
+
+    passwordController.clear();
+    confirmPasswordController.clear();
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final deviceType = MyClass.getDeviceType(MediaQuery.of(context).size);
     // final authService = Provider.of<AuthService>(context);
