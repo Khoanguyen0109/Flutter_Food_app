@@ -31,7 +31,7 @@ class PrepareOrder extends StatelessWidget {
           SafeArea(
             child: Center(
                 child: CircularProgressBar(
-                    currentProgress: (status + 1 / 5) * 100)),
+                    currentProgress: ((status + 1) / 5) * 100)),
           ),
           SafeArea(
             child: Center(

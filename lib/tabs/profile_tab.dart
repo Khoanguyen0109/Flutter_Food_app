@@ -62,7 +62,7 @@ class _ProfileTabState extends State<ProfileTab> {
                             ),
                           ),
                           SizedBox(height: 10),
-                          Text(user.name,
+                          Text(user?.name ?? '',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 22,
@@ -70,7 +70,7 @@ class _ProfileTabState extends State<ProfileTab> {
                                   letterSpacing: 0.5,
                                   color: Colors.white)),
                           SizedBox(height: 10),
-                          Text(user.email,
+                          Text(user?.email ?? '',
                               textAlign: TextAlign.center,
                               style:
                                   TextStyle(fontSize: 16, color: Colors.white)),
