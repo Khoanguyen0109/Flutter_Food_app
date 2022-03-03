@@ -10,7 +10,12 @@ class StoreServices {
     try {
       String url = 'auth/merchant';
       print(category);
-      final data = await ApiService.get(url, null);
+      dynamic data;
+      if (category != null) {
+        data = await ApiService.get(url, {'category': category});
+      } else {
+        data = await ApiService.get(url, null);
+      }
       print(data);
       List<StoreModel> dataList = [];
       for (var u in data['data']) {
